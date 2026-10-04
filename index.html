@@ -892,4 +892,4 @@ ready.then(()=>{if(!db)setTimeout(()=>{maybeGreet();checkSoon()},700)});
 $('mascot').addEventListener('click',()=>maybeGreet(true));$('mascot').style.cursor='pointer';
 })();
 </script>
-<script>if("serviceWorker" in navigator){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}</script></body></html>
+<script>if("serviceWorker" in navigator){let reloaded=false;navigator.serviceWorker.addEventListener("controllerchange",()=>{if(reloaded)return;reloaded=true;location.reload()});addEventListener("load",()=>navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(r=>{r.update();document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")r.update()})}).catch(()=>{}))}</script></body></html>
