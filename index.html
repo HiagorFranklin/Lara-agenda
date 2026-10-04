@@ -224,6 +224,7 @@ h1{font-family:var(--display);font-weight:700;font-size:clamp(1.7rem,4.6vw,2.6re
 #diary-text::placeholder{color:#A88BB2}
 .dfoot{display:flex;justify-content:space-between;gap:8px;font-size:.78rem;font-weight:700;color:var(--muted);margin-top:6px}
 .paws .heartmark{width:11px;height:11px;line-height:0}
+.mini.bell{color:var(--accent)}
 .foot{text-align:center;color:var(--muted);font-family:var(--hand);font-size:1.25rem}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.confetti{display:none}}
 h1 #title{background:linear-gradient(transparent 62%,var(--accent-soft) 62%);padding:0 4px}
@@ -507,7 +508,7 @@ function renderDay(){
     return '<div class="ev" style="--c:'+c.color+'"><div class="face">'+catFace(c.fur,{stripes:c.stripes,mood:e.mood||'happy'})+'</div><div style="min-width:0">'+
       '<div class="t">'+esc(e.title)+'</div><div class="meta"><span class="tag">'+c.label+'</span>'+(e.time?'<span>'+esc(e.time)+'</span>':'<span>dia todo</span>')+(e.yearly?'<span>todo ano</span>':'')+'</div>'+
       (e.note?'<div class="note">'+esc(e.note)+'</div>':'')+'</div>'+
-      '<div class="acts"><button type="button" class="mini" data-edit="'+esc(e.id)+'">Editar</button><button type="button" class="mini danger" data-del="'+esc(e.id)+'">Apagar</button></div></div>'}).join('');
+      '<div class="acts">'+(CAN_ICS?'<button type="button" class="mini bell" data-ics="'+esc(e.id)+'">🔔 Lembrar</button>':'')+'<button type="button" class="mini" data-edit="'+esc(e.id)+'">Editar</button><button type="button" class="mini danger" data-del="'+esc(e.id)+'">Apagar</button></div></div>'}).join('');
 }
 function renderUpcoming(){
   const list=state.events.map(e=>({e,d:nextOcc(e)})).filter(x=>x.d).sort((a,b)=>a.d.localeCompare(b.d)||byTime(a.e,b.e)).slice(0,5);
@@ -576,6 +577,7 @@ $('add-btn').onclick=()=>openForm(null,state.sel);
 
 let armed=null,armT;
 $('events').addEventListener('click',async e=>{
+  const ic=e.target.closest('[data-ics]');if(ic){saveIcs(state.events.find(x=>x.id===ic.dataset.ics));return}
   const ed=e.target.closest('[data-edit]');if(ed){openForm(state.events.find(x=>x.id===ed.dataset.edit));return}
   const del=e.target.closest('[data-del]');if(!del)return;
   if(armed!==del){if(armed){armed.classList.remove('arm');armed.textContent='Apagar'}armed=del;del.classList.add('arm');del.textContent='Confirmar';clearTimeout(armT);
@@ -583,6 +585,22 @@ $('events').addEventListener('click',async e=>{
   armed=null;try{await delDoc('events',del.dataset.del);renderAll();toast('Compromisso apagado','sad')}catch(err){writeErr(err)}
 });
 function renderAll(){render();renderMural()}
+/* ---------- lembrete no calendário do celular (só no app instalado) ---------- */
+const CAN_ICS=!window.claude;
+function icsEsc(t){return String(t||'').replace(/\\/g,'\\\\').replace(/\n/g,'\\n').replace(/([,;])/g,'\\$1')}
+function makeIcs(e){const d=e.date.replace(/-/g,'');const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Agenda da Lara//PT-BR','CALSCALE:GREGORIAN','BEGIN:VEVENT',
+  'UID:'+e.id+'@agenda-da-lara','DTSTAMP:'+new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z','SUMMARY:'+icsEsc('🐱 '+e.title)];
+  if(e.time){const [h,m]=e.time.split(':').map(Number);const end=new Date(+e.date.slice(0,4),+e.date.slice(5,7)-1,+e.date.slice(8,10),h+1,m);
+    L.push('DTSTART:'+d+'T'+pad(h)+pad(m)+'00','DTEND:'+ymd(end).replace(/-/g,'')+'T'+pad(end.getHours())+pad(end.getMinutes())+'00')}
+  else{const nx=new Date(+e.date.slice(0,4),+e.date.slice(5,7)-1,+e.date.slice(8,10)+1);L.push('DTSTART;VALUE=DATE:'+d,'DTEND;VALUE=DATE:'+ymd(nx).replace(/-/g,''))}
+  if(e.yearly)L.push('RRULE:FREQ=YEARLY');
+  if(e.note)L.push('DESCRIPTION:'+icsEsc(e.note));
+  L.push('BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+icsEsc('Miau! '+e.title),e.time?'TRIGGER:-PT30M':'TRIGGER:PT9H','END:VALARM');
+  if(e.time)L.push('BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+icsEsc('Miau! Amanhã: '+e.title),'TRIGGER:-PT1D','END:VALARM');
+  L.push('END:VEVENT','END:VCALENDAR');return L.join('\r\n')}
+function saveIcs(e){if(!e)return;const blob=new Blob([makeIcs(e)],{type:'text/calendar;charset=utf-8'});const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=(e.title||'compromisso').replace(/[^\w\u00C0-\u017F -]/g,'').trim().slice(0,40)+'.ics';document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),60000);toast('Abra o arquivo e toque em Adicionar ao calendário','wink')}
 /* ---------- diário ---------- */
 var diaryShown=null,diaryT=null,diaryDirty=false,diaryMood='';
 function renderDiary(){const ta=$('diary-text');if(!ta)return;const d=state.sel;
