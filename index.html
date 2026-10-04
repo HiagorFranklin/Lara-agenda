@@ -225,7 +225,7 @@ h1{font-family:var(--display);font-weight:700;font-size:clamp(1.7rem,4.6vw,2.6re
 .dfoot{display:flex;justify-content:space-between;gap:8px;font-size:.78rem;font-weight:700;color:var(--muted);margin-top:6px}
 .paws .heartmark{width:11px;height:11px;line-height:0}
 .mini.bell{color:var(--accent)}
-.extras{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:start}
+.extras{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:22px;align-items:start}
 @media (max-width:820px){.extras{grid-template-columns:minmax(0,1fr)}}
 .extras h3{font-family:var(--display);font-weight:600;font-size:1.25rem;margin:0}
 .xhead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
@@ -269,6 +269,23 @@ h1{font-family:var(--display);font-weight:700;font-size:clamp(1.7rem,4.6vw,2.6re
 .cy-set .chk{grid-column:1/-1;flex-direction:row;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:.85rem}
 .cy-note{font-size:.75rem;color:var(--muted);margin-top:8px}
 .paws .cyc{width:10px;height:10px;line-height:0}
+.outfits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:4px 0 6px}
+.outfits button{border:2px solid var(--line);background:var(--paper);border-radius:14px;padding:4px 2px;display:flex;flex-direction:column;align-items:center;font-size:.72rem;font-weight:700;color:var(--ink)}
+.outfits button svg{width:44px;height:44px}
+.outfits button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.outfits button:disabled{opacity:.5;cursor:not-allowed}
+.care{display:flex;gap:10px;align-items:center;background:#FBE3EE;color:#5A1838;border-radius:16px;padding:8px 12px;margin:6px 0 10px;font-weight:700;font-size:.88rem}
+.care svg{width:40px;height:40px;flex:none}
+.ncare{background:#FBE3EE;color:#5A1838;border-radius:12px;padding:6px 10px;font-size:.85rem;font-weight:700;margin:0 0 8px}
+.wx-form{display:flex;gap:8px}
+.wx-form input{flex:1;min-width:0;font:inherit;color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:8px 12px}
+.wx-main{display:flex;align-items:center;gap:14px}
+.wx-cat{width:96px;height:96px;flex:none}.wx-cat svg{width:96px;height:96px;overflow:visible}
+.wx-temp{font-family:var(--display);font-size:2.8rem;font-weight:700;line-height:1}
+.wx-cond{color:var(--muted);font-weight:700}
+.wx-row{display:grid;grid-template-columns:70px minmax(0,1fr) auto;gap:8px;padding:6px 0;border-top:1px dashed var(--line);font-size:.9rem;font-variant-numeric:tabular-nums}
+.wx-row span:last-child{color:var(--muted);font-weight:700}
+.pet-face svg,.outfits svg{overflow:visible}
 .foot{text-align:center;color:var(--muted);font-family:var(--hand);font-size:1.25rem}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.confetti{display:none}}
 h1 #title{background:linear-gradient(transparent 62%,var(--accent-soft) 62%);padding:0 4px}
@@ -344,6 +361,7 @@ h1 #title{background:linear-gradient(transparent 62%,var(--accent-soft) 62%);pad
   <div class="extras">
     <section class="card pet" id="pet" aria-label="Gatinha virtual"></section>
     <section class="card cycle" id="cycle" aria-label="Ciclo menstrual"></section>
+    <section class="card weather" id="weather" aria-label="Clima" hidden></section>
   </div>
   <div class="foot">feita com carinho (e muitos gatinhos)</div>
 </div>
@@ -393,6 +411,17 @@ const CATS=[
   {id:'saude',label:'Saúde',color:'#3F9E78',fur:'#FBF6F1'},
   {id:'outro',label:'Outros',color:'#B07F6A',fur:'#C79A73',stripes:true}
 ];
+const AK='#24132A';
+const ACC={
+ bow:'<g transform="translate(47 15) rotate(18)"><path d="M0 0l-9-5.5v11zM0 0l9-5.5v11z" fill="#E86AA6" stroke="'+AK+'" stroke-width="1.4" stroke-linejoin="round"/><circle r="2.6" fill="#F7A8C8" stroke="'+AK+'" stroke-width="1.2"/></g>',
+ glasses:'<g fill="rgba(255,255,255,.25)" stroke="#F2C14E" stroke-width="2"><circle cx="24" cy="34" r="6.5"/><circle cx="40" cy="34" r="6.5"/></g><path d="M30.5 34h3" stroke="#F2C14E" stroke-width="2"/>',
+ sunglasses:'<g fill="#1A0F1E" stroke="'+AK+'" stroke-width="1.6"><path d="M16.5 30h15v4.5a5.5 5.5 0 0 1-11 0z"/><path d="M32.5 30h15v4.5a5.5 5.5 0 0 1-11 0z"/></g><path d="M20 31.5l4 0" stroke="#fff" stroke-width="1.4" opacity=".6"/>',
+ scarf:'<path d="M13 50q19 9 38 0l-1 6q-18 8-36 0z" fill="#D63A8C" stroke="'+AK+'" stroke-width="1.4" stroke-linejoin="round"/><path d="M40 55l3 9 6-2-4-8z" fill="#B0309B" stroke="'+AK+'" stroke-width="1.4" stroke-linejoin="round"/><path d="M20 53l2 3M28 55l1 3M36 55l-1 3" stroke="#fff" stroke-width="1.2" opacity=".7"/>',
+ crown:'<path d="M21 21l2.5-10 5 5.5L32 8l3.5 8.5 5-5.5L43 21z" fill="#F2C14E" stroke="'+AK+'" stroke-width="1.5" stroke-linejoin="round"/><circle cx="32" cy="16" r="1.8" fill="#D63A8C"/>',
+ hat:'<ellipse cx="32" cy="19.5" rx="17" ry="3.6" fill="#6E0F73" stroke="'+AK+'" stroke-width="1.4"/><path d="M24 18.5L35 -1l2 7-3 2 6 10.5z" fill="#6E0F73" stroke="'+AK+'" stroke-width="1.4" stroke-linejoin="round"/><path d="M25 15.5h14" stroke="#F39AC9" stroke-width="2.2"/><path d="M41 6l1 2.5 2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1z" fill="#F2C14E"/>',
+ umbrella:'<path d="M4 15a28 13 0 0 1 56 0q-4.7-3-9.3 0-4.7-3-9.4 0-4.6-3-9.3 0-4.7-3-9.3 0-4.7-3-9.4 0-4.6-3-9.3 0z" fill="#8E2C93" stroke="'+AK+'" stroke-width="1.5" stroke-linejoin="round"/><path d="M57 15v34q0 4-4 4" stroke="'+AK+'" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M8 24l-1.5 4M5 33l-1.5 4M60 25l-1.5 4" stroke="#7FC4F0" stroke-width="2" stroke-linecap="round"/>'
+};
+const OUTFITS=[['bow','Lacinho',2],['glasses','Óculos',4],['scarf','Cachecol',7],['crown','Coroa',10],['hat','Chapéu de bruxinha',14]];
 const EMOTES=[['happy','Feliz'],['love','Apaixonada'],['wink','Piscadinha'],['party','Festa'],['surprised','Surpresa'],['sad','Tristinha'],['sleepy','Soninho'],['angry','Bravinha']];
 const catOf=id=>CATS.find(c=>c.id===id)||CATS[5];
 const MESES=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
@@ -429,7 +458,7 @@ function catFace(fur,o){o=o||{};const k='#4B3442',mood=o.mood||'happy';
     '<path d="M15.5 21l1-9 8 6z M48.5 21l-1-9-8 6z" fill="#F4A7B9"/>'+stripes+
     '<ellipse cx="17.5" cy="42" rx="4" ry="2.6" fill="#F4A7B9" opacity=".8"/><ellipse cx="46.5" cy="42" rx="4" ry="2.6" fill="#F4A7B9" opacity=".8"/>'+eyes+
     '<path d="M29.8 40.5h4.4l-2.2 2.6z" fill="#F39AC9"/>'+mouth+
-    '<path d="M6 38l9 2M6 44l9-1M58 38l-9 2M58 44l-9-1" stroke="'+f+'" stroke-width="1.3" stroke-linecap="round" opacity=".6"/>'+extra+'</svg>';
+    '<path d="M6 38l9 2M6 44l9-1M58 38l-9 2M58 44l-9-1" stroke="'+f+'" stroke-width="1.3" stroke-linecap="round" opacity=".6"/>'+extra+(o.acc||[]).map(a=>ACC[a]||'').join('')+'</svg>';
 }
 function sleepyCat(){const k='#4B3442',fur='#A9A3B2';
   return '<svg viewBox="0 0 160 96" aria-hidden="true">'+
@@ -635,7 +664,61 @@ $('events').addEventListener('click',async e=>{
     armT=setTimeout(()=>{if(armed){armed.classList.remove('arm');armed.textContent='Apagar';armed=null}},3500);return}
   armed=null;try{await delDoc('events',del.dataset.del);renderAll();toast('Compromisso apagado','sad')}catch(err){writeErr(err)}
 });
-function renderAll(){render();renderMural();renderPet();renderCycle()}
+function renderAll(){render();renderMural();renderPet();renderCycle();renderWeather();fetchWx()}
+/* ---------- roupinhas ---------- */
+function outfitPicker(p){const best=Math.max(p.best||0,p.streak||0);
+  return '<button type="button" data-outfit="none" aria-pressed="'+(!p.acc)+'">'+catFace(p.fur,{mood:'happy'})+'<small>Nenhuma</small></button>'+
+    OUTFITS.map(([id,l,need])=>{const ok=best>=need;return '<button type="button" data-outfit="'+id+'" aria-pressed="'+(p.acc===id)+'"'+(ok?'':' disabled')+'>'+catFace(p.fur,{mood:'happy',acc:[id]})+'<small>'+(ok?l:'🔒 '+need+' dias')+'</small></button>'}).join('')}
+
+/* ---------- cuidados do período ---------- */
+function periodCare(){buildCycleCache();const m=cycleCache.m;if(!m)return null;const nm=state.name||'';
+  if(cycleCache.map[todayStr]==='p'){const d=diffDays(m.last,todayStr)+1;
+    const t=['Dia de se cuidar: chá quentinho, cobertor e muito carinho 💜','Se der cólica, uma bolsinha de água quente ajuda. Tô aqui com você.','Bebe bastante água hoje, tá? E um chocolatinho não faz mal 🍫','Pega leve hoje'+(nm?', '+nm:'')+'. Você merece descanso.','Quase acabando! Você é muito forte 💪'];
+    return t[Math.min(d-1,t.length-1)]}
+  const n=diffDays(todayStr,m.next);
+  if(n===0)return 'Sua menstruação pode chegar hoje. Deixa um absorvente na bolsa 💜';
+  if(n>0&&n<=3)return 'Sua menstruação deve chegar em '+n+(n>1?' dias':' dia')+'. Separa um chocolate 🍫 e a bolsinha de água quente!';
+  return null}
+
+/* ---------- clima do dia (só no app) ---------- */
+const CAN_FETCH=!window.claude;
+const WMO={0:['Céu limpo','sun'],1:['Quase limpo','sun'],2:['Parcialmente nublado','cloud'],3:['Nublado','cloud'],45:['Neblina','cloud'],48:['Neblina','cloud'],51:['Garoa fraca','rain'],53:['Garoa','rain'],55:['Garoa forte','rain'],56:['Garoa gelada','rain'],57:['Garoa gelada','rain'],61:['Chuva fraca','rain'],63:['Chuva','rain'],65:['Chuva forte','rain'],66:['Chuva gelada','rain'],67:['Chuva gelada','rain'],71:['Neve fraca','cold'],73:['Neve','cold'],75:['Neve forte','cold'],77:['Neve','cold'],80:['Pancadas de chuva','rain'],81:['Pancadas de chuva','rain'],82:['Temporal','rain'],85:['Neve','cold'],86:['Neve','cold'],95:['Trovoada','rain'],96:['Trovoada com granizo','rain'],99:['Trovoada com granizo','rain']};
+var wx=null;try{wx=JSON.parse(localStorage.getItem(LS+'-clima')||'null')}catch(e){}
+function saveWx(){try{localStorage.setItem(LS+'-clima',JSON.stringify(wx))}catch(e){}}
+async function fetchWx(force){if(!CAN_FETCH||!wx||!wx.loc)return;if(!force&&wx.data&&Date.now()-wx.at<30*60e3)return;
+  const {lat,lon}=wx.loc;const u='https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&current=temperature_2m,weather_code,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=2';
+  try{const r=await fetch(u);if(!r.ok)throw 0;wx.data=await r.json();wx.at=Date.now();saveWx();renderWeather()}catch(e){if(force)toast('Não consegui ver o clima agora. Confere a internet.','sad')}}
+async function findCity(q){const r=await fetch('https://geocoding-api.open-meteo.com/v1/search?name='+encodeURIComponent(q)+'&count=1&language=pt&format=json');const j=await r.json();
+  const c=j&&j.results&&j.results[0];if(!c)throw new Error('none');return {name:c.name+(c.admin1?', '+c.admin1:''),lat:c.latitude,lon:c.longitude}}
+var wxEditing=false;
+function renderWeather(){const el=$('weather');if(!el)return;if(!CAN_FETCH){el.hidden=true;return}el.hidden=false;
+  const pp=petNow(),fur=pp.fur,pn=pp.name;
+  if(!wx||!wx.loc||wxEditing){el.innerHTML='<div class="xhead"><h3>Clima do dia</h3></div><p style="margin:4px 0 10px">Me conta sua cidade que a '+esc(pn)+' se veste pro tempo de hoje.</p>'+
+    '<form id="wx-form" class="wx-form"><input id="wx-city" type="text" placeholder="Ex.: Campinas" aria-label="Cidade" value="'+esc(wx&&wx.loc?wx.loc.name.split(',')[0]:'')+'"><button class="btn primary" type="submit">Buscar</button></form>'+
+    '<button type="button" class="mini" id="wx-geo" style="margin-top:6px">📍 Usar minha localização</button>'+(wx&&wx.loc?' <button type="button" class="mini" id="wx-cancel">Cancelar</button>':'');return}
+  const d=wx.data;if(!d||!d.current){el.innerHTML='<div class="xhead"><h3>Clima do dia</h3></div><p>Buscando o tempo em '+esc(wx.loc.name)+'...</p>';return}
+  const cur=d.current,dl=d.daily;const w=WMO[cur.weather_code]||['—','cloud'];const t=Math.round(cur.temperature_2m);
+  const rainP=dl.precipitation_probability_max?dl.precipitation_probability_max[0]:0;
+  const rainy=w[1]==='rain'||rainP>=60;const cold=t<=16||w[1]==='cold';const hot=t>=28&&w[1]==='sun';
+  const acc=[];if(rainy)acc.push('umbrella');if(cold)acc.push('scarf');if(hot)acc.push('sunglasses');
+  const say=rainy?'Leva o guarda-chuva hoje, viu? ☔':cold?'Tá friozinho! Pega um casaquinho 🧣':hot?'Calorzão! Bebe bastante água 💧':'Dia lindo pra passear! ☀️';
+  const tw=WMO[dl.weather_code[1]]||['—'];
+  el.innerHTML='<div class="xhead"><h3>Clima do dia</h3><button type="button" class="mini" id="wx-change">Trocar cidade</button></div>'+
+    '<div class="wx-main"><div class="wx-cat">'+catFace(fur,{mood:rainy||cold?'surprised':'happy',acc})+'</div><div><div class="wx-temp">'+t+'°</div><div class="wx-cond">'+w[0]+'</div></div></div>'+
+    '<div class="pet-say" style="margin:8px 0 10px">'+say+'</div>'+
+    '<div class="wx-row"><span>Hoje</span><b>'+Math.round(dl.temperature_2m_max[0])+'° / '+Math.round(dl.temperature_2m_min[0])+'°</b><span>chuva '+(rainP||0)+'%</span></div>'+
+    '<div class="wx-row"><span>Amanhã</span><b>'+Math.round(dl.temperature_2m_max[1])+'° / '+Math.round(dl.temperature_2m_min[1])+'°</b><span>'+tw[0]+'</span></div>'+
+    '<div class="cy-note">'+esc(wx.loc.name)+' · atualizado às '+new Date(wx.at).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})+'</div>';}
+document.addEventListener('submit',async e=>{if(e.target.id!=='wx-form')return;e.preventDefault();const q=$('wx-city').value.trim();if(!q)return;
+  try{const loc=await findCity(q);wx={loc};wxEditing=false;saveWx();renderWeather();fetchWx(true)}catch(err){toast('Não achei essa cidade. Tenta escrever de outro jeito.','surprised')}});
+document.addEventListener('click',e=>{
+  if(e.target.closest('#wx-change')){wxEditing=true;renderWeather();return}
+  if(e.target.closest('#wx-cancel')){wxEditing=false;renderWeather();return}
+  if(e.target.closest('#wx-geo')){if(!navigator.geolocation){toast('Esse celular não deixou usar a localização.','sad');return}
+    navigator.geolocation.getCurrentPosition(pos=>{wx={loc:{name:'Sua localização',lat:+pos.coords.latitude.toFixed(3),lon:+pos.coords.longitude.toFixed(3)}};wxEditing=false;saveWx();renderWeather();fetchWx(true)},
+      ()=>toast('Sem permissão de localização. Escreve o nome da cidade.','sad'),{timeout:10000})}});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')fetchWx()});
+
 
 /* ---------- dados privados (gatinha e ciclo) ---------- */
 async function savePrivate(key,obj){await ready;
@@ -649,16 +732,16 @@ function petNow(){const p=Object.assign({name:'Mel',fur:'#2A2030',food:80,love:8
   const h=Math.max(0,(Date.now()-p.t)/36e5);['food','love','fun'].forEach(k=>p[k]=Math.max(0,Math.min(100,p[k]-RATE[k]*h)));p.t=Date.now();return p}
 let petEditing=false;
 function petMood(p){const m=Math.min(p.food,p.love,p.fun);if(m>=70)return 'love';if(m>=45)return 'happy';if(m>=20)return 'surprised';return 'sad'}
-function petLine(p){const who=state.name||'';const low=[['food',p.food],['love',p.love],['fun',p.fun]].sort((a,b)=>a[1]-b[1])[0];
+function petLine(p){const who=state.name||'';const care=periodCare();if(care&&cycleCache&&cycleCache.map[todayStr]==='p'&&Math.min(p.food,p.love,p.fun)>=45)return care;const low=[['food',p.food],['love',p.love],['fun',p.fun]].sort((a,b)=>a[1]-b[1])[0];
   if(low[1]<45)return {food:'Miau... tô com fominha. Me dá um petisco?',love:'Tô com saudade. Me faz um carinho?',fun:'Tô entediada... vamos brincar?'}[low[0]];
   const happy=['Te amo'+(who?', '+who:'')+'!','Purrr... que dia gostoso.','Você é a melhor humana do mundo!','Hoje vai ser um dia lindo, eu sinto nos bigodes.','Já anotou seus compromissos hoje?'];
   return happy[new Date().getDate()%happy.length]}
 function renderPet(){const el=$('pet');if(!el)return;const p=petNow();
-  if(petEditing){el.innerHTML='<div class="xhead"><h3>Minha gatinha</h3></div><div class="pedit"><label class="lbl" for="pet-name-in" style="font-size:.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Nome</label><input id="pet-name-in" maxlength="20" value="'+esc(p.name)+'"><span style="font-size:.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:6px">Cor do pelo</span><div class="furs">'+
+  if(petEditing){el.innerHTML='<div class="xhead"><h3>Minha gatinha</h3></div><div class="pedit"><label class="lbl" for="pet-name-in" style="font-size:.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Nome</label><input id="pet-name-in" maxlength="20" value="'+esc(p.name)+'"><span style="font-size:.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:6px">Roupinha</span><div class="outfits">'+outfitPicker(p)+'</div><span style="font-size:.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:6px">Cor do pelo</span><div class="furs">'+
     PET_FURS.map(f=>'<button type="button" data-fur="'+f+'" aria-label="Cor '+f+'" aria-pressed="'+(f===p.fur)+'" style="background:'+f+'"></button>').join('')+'</div><div class="modal-acts"><button class="btn" type="button" id="pet-cancel">Cancelar</button><button class="btn primary" type="button" id="pet-save">Salvar</button></div></div>';return}
   const bar=(lbl,v)=>'<div class="bar"><span>'+lbl+'</span><div class="track"><div class="fill'+(v<30?' low':'')+'" style="width:'+Math.round(v)+'%"></div></div><span>'+Math.round(v)+'%</span></div>';
   el.innerHTML='<div class="xhead"><h3>'+esc(p.name)+', sua gatinha</h3><button type="button" class="mini" id="pet-edit">Editar</button></div>'+
-    '<div class="pet-stage"><button type="button" class="pet-face" id="pet-face" aria-label="Fazer carinho na '+esc(p.name)+'">'+catFace(p.fur,{mood:petMood(p)})+'</button><div class="pet-say" id="pet-say"></div></div>'+
+    '<div class="pet-stage"><button type="button" class="pet-face" id="pet-face" aria-label="Fazer carinho na '+esc(p.name)+'">'+catFace(p.fur,{mood:petMood(p),acc:p.acc?[p.acc]:[]})+'</button><div class="pet-say" id="pet-say"></div></div>'+
     '<div class="bars">'+bar('Barriguinha',p.food)+bar('Carinho',p.love)+bar('Diversão',p.fun)+'</div>'+
     '<div class="pacts"><button type="button" data-pet="food"><b>🐟</b>Petisco</button><button type="button" data-pet="love"><b>🤍</b>Carinho</button><button type="button" data-pet="fun"><b>🧶</b>Brincar</button></div>'+
     '<div class="pfoot">'+(p.streak>1?p.streak+' dias seguidos cuidando da '+esc(p.name)+' 💜':'Cuide dela todo dia pra ela ficar feliz')+'</div>';
@@ -666,7 +749,7 @@ function renderPet(){const el=$('pet');if(!el)return;const p=petNow();
 function floatHearts(n){const st=document.querySelector('.pet-stage');if(!st)return;for(let i=0;i<n;i++){const h=document.createElement('span');h.className='floaty';h.innerHTML=heart(['#D63A8C','#B0309B','#F39AC9'][i%3]);
   h.style.left=(40+Math.random()*30)+'px';h.style.setProperty('--dx',(Math.random()*60-30)+'px');h.style.animationDelay=(i*.12)+'s';st.appendChild(h);setTimeout(()=>h.remove(),1500)}}
 async function petAct(kind,amt){const p=petNow();p[kind]=Math.min(100,p[kind]+amt);
-  if(p.lastDay!==todayStr){const y=ymd(new Date(today.getFullYear(),today.getMonth(),today.getDate()-1));p.streak=p.lastDay===y?(p.streak||0)+1:1;p.lastDay=todayStr}
+  if(p.lastDay!==todayStr){const y=ymd(new Date(today.getFullYear(),today.getMonth(),today.getDate()-1));p.streak=p.lastDay===y?(p.streak||0)+1:1;p.lastDay=todayStr;const before=p.best||0;p.best=Math.max(before,p.streak);const un=OUTFITS.find(o=>o[2]>before&&o[2]<=p.best);if(un)setTimeout(()=>toast('A '+p.name+' ganhou: '+un[1]+'! Vista ela em Editar.','party'),900)}
   state.pet=p;renderPet();const f=$('pet-face');if(f){f.classList.add('hop');}floatHearts(kind==='love'?5:3);
   try{await savePrivate('gatinho',p)}catch(err){writeErr(err)}}
 document.addEventListener('click',e=>{
@@ -675,8 +758,9 @@ document.addEventListener('click',e=>{
   if(e.target.closest('#pet-face')){petAct('love',8);playCat('mew');return}
   if(e.target.closest('#pet-edit')){petEditing=true;renderPet();return}
   if(e.target.closest('#pet-cancel')){petEditing=false;renderPet();return}
+  const ob=e.target.closest('[data-outfit]');if(ob){if(ob.disabled)return;document.querySelectorAll('[data-outfit]').forEach(x=>x.setAttribute('aria-pressed',String(x===ob)));return}
   const fb=e.target.closest('[data-fur]');if(fb){document.querySelectorAll('[data-fur]').forEach(x=>x.setAttribute('aria-pressed',String(x===fb)));return}
-  if(e.target.closest('#pet-save')){const p=petNow();p.name=($('pet-name-in').value.trim()||'Mel').slice(0,20);const sel=document.querySelector('[data-fur][aria-pressed="true"]');if(sel)p.fur=sel.dataset.fur;
+  if(e.target.closest('#pet-save')){const p=petNow();p.name=($('pet-name-in').value.trim()||'Mel').slice(0,20);const sel=document.querySelector('[data-fur][aria-pressed="true"]');if(sel)p.fur=sel.dataset.fur;const so=document.querySelector('[data-outfit][aria-pressed="true"]');p.acc=so&&so.dataset.outfit!=='none'?so.dataset.outfit:'';
     petEditing=false;state.pet=p;renderPet();savePrivate('gatinho',p).then(()=>toast('A '+p.name+' amou o novo visual!','love')).catch(writeErr);return}
 });
 setInterval(()=>{if(!petEditing&&document.visibilityState==='visible')renderPet()},60000);
@@ -710,7 +794,7 @@ function renderCycle(){const el=$('cycle');if(!el)return;buildCycleCache();const
   let body='';
   if(!m){body='<p style="margin:6px 0 12px">Marque o primeiro dia da sua última menstruação e eu calculo a previsão do próximo ciclo.</p>'}
   else{const day=diffDays(m.last,todayStr)+1;const inP=cycleCache.map[todayStr]==='p';const toNext=diffDays(todayStr,m.next);
-    const ov=addDays(m.next,-14);const fStart=addDays(ov,-5),fEnd=addDays(ov,1);
+    let ov=addDays(m.next,-14);if(addDays(ov,1)<todayStr)ov=addDays(m.next,m.avg-14);const fStart=addDays(ov,-5),fEnd=addDays(ov,1);
     body='<div class="cy-big"><b>Dia '+day+'</b><span>do ciclo'+(inP?' · menstruada':'')+'</span></div>'+
       '<div class="cy-info"><div>'+DROP('#D2386E',true)+'<span>Próxima menstruação: <b>'+fmtD(m.next)+'</b> ('+(toNext<=0?'pode vir hoje':toNext===1?'amanhã':'em '+toNext+' dias')+')</span></div>'+
       '<div>'+DOT('#C9A8EE')+'<span>Período fértil estimado: '+fmtD(fStart)+' a '+fmtD(fEnd)+'</span></div>'+
@@ -721,7 +805,7 @@ function renderCycle(){const el=$('cycle');if(!el)return;buildCycleCache();const
     '<div class="cy-set"><label>Duração (dias)<input type="number" id="cy-period" min="2" max="10" value="'+c.period+'"></label><label>Ciclo padrão (dias)<input type="number" id="cy-len" min="20" max="45" value="'+c.cycle+'"></label>'+
     '<label class="chk"><input type="checkbox" id="cy-show"'+(c.show?' checked':'')+'> Mostrar gotinhas no calendário</label></div>'+
     '<div class="cy-note">Dica: escolha um dia no calendário pra marcar inícios passados. É só uma estimativa com base nos seus registros e não serve como método contraceptivo.</div>';
-  el.innerHTML='<div class="xhead"><h3>Meu ciclo 🌸</h3>'+lock+'</div>'+body;}
+  const care=periodCare();el.innerHTML='<div class="xhead"><h3>Meu ciclo 🌸</h3>'+lock+'</div>'+(care?'<div class="care">'+catFace(petNow().fur,{mood:'love'})+'<span>'+esc(care)+'</span></div>':'')+body;}
 async function saveCycle(c,msg){state.cycle=c;cycleCache=null;renderCycle();renderCal();try{await savePrivate('ciclo',c);if(msg)toast(msg,'love',true)}catch(err){writeErr(err)}}
 document.addEventListener('click',e=>{const c=cyc();
   if(e.target.closest('#cy-today')){c.starts=[...new Set([...c.starts,todayStr])].sort();saveCycle(c,'Anotado. Se cuida hoje, viu? 💜');return}
@@ -872,7 +956,7 @@ function maybeGreet(force){if(greeted&&!force)return;greeted=true;
   else if(mp){const yrs=today.getFullYear()-Number(mp.date.slice(0,4));ph='<div class="bphoto"><img src="'+esc(mp.src)+'" alt=""><div>Há '+yrs+(yrs>1?' anos':' ano')+(mp.caption?': '+esc(mp.caption):', neste mesmo dia')+'</div></div>';if(!list.length&&!bday)msg='Olha essa lembrança de '+mp.date.slice(0,4)+'!'}
   const items=list.slice(0,3).map(e=>'<li><i class="em">'+catFace(catOf(e.cat).fur,{stripes:catOf(e.cat).stripes,mood:e.mood||'happy'})+'</i><span>'+esc(e.title)+'</span><small>'+(e.time?esc(e.time):'dia todo')+'</small></li>').join('');
   const n=$('notice');
-  n.innerHTML='<button type="button" class="ncat" id="ncat" aria-label="Fazer carinho no gatinho">'+catFace(fur,{mood})+'</button><div class="bubble" role="status"><div class="hi"></div><div class="msg"></div>'+(items?'<ul>'+items+'</ul>':'')+ph+
+  n.innerHTML='<button type="button" class="ncat" id="ncat" aria-label="Fazer carinho no gatinho">'+catFace(fur,{mood})+'</button><div class="bubble" role="status"><div class="hi"></div><div class="msg"></div>'+(items?'<ul>'+items+'</ul>':'')+ph+(periodCare()?'<div class="ncare">'+esc(periodCare())+'</div>':'')+
     '<div class="bacts"><button type="button" id="n-close">Fechar</button><button type="button" class="go" id="n-go">Ver o dia</button></div></div>';
   n.querySelector('.hi').textContent=hi;n.querySelector('.msg').textContent=msg;n.hidden=false;playCat(bday?'party':'meow');
   $('n-close').onclick=closeNotice;
