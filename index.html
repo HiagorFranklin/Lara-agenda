@@ -5,6 +5,7 @@
 <style>
 /* Layout: mural de polaroids no topo; abaixo, calendário do mês à esquerda e o dia escolhido à direita (empilha no celular). */
 :root{
+  --pat:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cg fill='black'%3E%3Cellipse cx='30' cy='38' rx='8' ry='7'/%3E%3Ccircle cx='21' cy='27' r='3.2'/%3E%3Ccircle cx='27' cy='22' r='3.2'/%3E%3Ccircle cx='34' cy='22' r='3.2'/%3E%3Ccircle cx='40' cy='27' r='3.2'/%3E%3Cg transform='translate(70 70) rotate(25)'%3E%3Cellipse cx='30' cy='38' rx='8' ry='7'/%3E%3Ccircle cx='21' cy='27' r='3.2'/%3E%3Ccircle cx='27' cy='22' r='3.2'/%3E%3Ccircle cx='34' cy='22' r='3.2'/%3E%3Ccircle cx='40' cy='27' r='3.2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   --bg:#EFCDF6; --paper:#FFFFFF; --ink:#24132A; --muted:#7A5884; --line:#E2B6EC;
   --accent:#6E0F73; --accent-ink:#FFFFFF; --accent-soft:#F5E1FA; --ginger:#1F1622; --today-ink:#FFFFFF;
   --blush:#F39AC9; --shadow:0 10px 28px -14px rgba(90,20,100,.4);
@@ -25,8 +26,7 @@
 [hidden]{display:none!important}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;position:relative;min-height:100%}
 body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:var(--line);opacity:.55;
-  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cg fill='black'%3E%3Cellipse cx='30' cy='38' rx='8' ry='7'/%3E%3Ccircle cx='21' cy='27' r='3.2'/%3E%3Ccircle cx='27' cy='22' r='3.2'/%3E%3Ccircle cx='34' cy='22' r='3.2'/%3E%3Ccircle cx='40' cy='27' r='3.2'/%3E%3Cg transform='translate(70 70) rotate(25)'%3E%3Cellipse cx='30' cy='38' rx='8' ry='7'/%3E%3Ccircle cx='21' cy='27' r='3.2'/%3E%3Ccircle cx='27' cy='22' r='3.2'/%3E%3Ccircle cx='34' cy='22' r='3.2'/%3E%3Ccircle cx='40' cy='27' r='3.2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cg fill='black'%3E%3Cellipse cx='30' cy='38' rx='8' ry='7'/%3E%3Ccircle cx='21' cy='27' r='3.2'/%3E%3Ccircle cx='27' cy='22' r='3.2'/%3E%3Ccircle cx='34' cy='22' r='3.2'/%3E%3Ccircle cx='40' cy='27' r='3.2'/%3E%3Cg transform='translate(70 70) rotate(25)'%3E%3Cellipse cx='30' cy='38' rx='8' ry='7'/%3E%3Ccircle cx='21' cy='27' r='3.2'/%3E%3Ccircle cx='27' cy='22' r='3.2'/%3E%3Ccircle cx='34' cy='22' r='3.2'/%3E%3Ccircle cx='40' cy='27' r='3.2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+  -webkit-mask-image:var(--pat);mask-image:var(--pat)}
 .wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding-inline:16px;padding-block:20px 48px;display:flex;flex-direction:column;gap:22px}
 button{font:inherit;color:inherit;cursor:pointer}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:8px}
@@ -305,6 +305,52 @@ h1{font-family:var(--display);font-weight:700;font-size:clamp(1.7rem,4.6vw,2.6re
 .wg-edit b{width:100%;font-family:var(--display)}
 .wg-edit label{display:flex;gap:6px;align-items:center;font-weight:700}
 .wg-edit input{width:18px;height:18px;accent-color:var(--accent)}
+.season{display:inline-flex;align-items:center;gap:8px;background:var(--paper);border:2px solid var(--line);border-radius:999px;padding:5px 14px 5px 6px;font-weight:700;font-size:.88rem;box-shadow:var(--shadow);align-self:flex-start}
+.season .sic{width:28px;height:28px;display:inline-block;line-height:0}.season .sic svg{width:28px;height:28px}
+.sdeco{display:flex;align-items:flex-end;gap:6px}
+.sdeco span{display:inline-block;width:40px;height:40px;line-height:0;animation:bob 2.4s ease-in-out infinite;animation-delay:calc(var(--i) * -.6s)}
+.sdeco span:nth-child(2){width:52px;height:52px}
+.sdeco svg{width:100%;height:100%}
+.sfloat{position:fixed;z-index:0;width:calc(34px * var(--s,1));height:calc(34px * var(--s,1));opacity:.35;pointer-events:none;animation:drift 14s ease-in-out infinite alternate;line-height:0}
+.sfloat svg{width:100%;height:100%}
+@keyframes drift{0%{transform:translate(0,0) rotate(-8deg)}50%{transform:translate(30px,-24px) rotate(6deg)}100%{transform:translate(-20px,18px) rotate(-4deg)}}
+:root.th-halloween{--ginger:#E8742A;--today-ink:#FFFFFF;--pat:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cg fill='black'%3E%3Cpath d='M40 40c2-4 4-5 4-5s1 3 0 6c6-2 12-8 16-10-1 5 2 9 7 10-4 1-6 4-6 8-3-3-7-3-10 0-1-3-4-5-7-4-1 3-3 6-4 8-1-2-3-5-4-8-3-1-6 1-7 4-3-3-7-3-10 0 0-4-2-7-6-8 5-1 8-5 7-10 4 2 10 8 16 10-1-3 0-6 0-6s2 1 4 5z'/%3E%3Ccircle cx='110' cy='105' r='14'/%3E%3C/g%3E%3C/svg%3E")}
+:root.th-natal{--ginger:#C8323C;--today-ink:#FFFFFF;--pat:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg stroke='black' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M30 15v30M17 22l26 16M17 38l26-16M90 70v30M77 77l26 16M77 93l26-16'/%3E%3C/g%3E%3C/svg%3E")}
+:root.th-anonovo{--ginger:#C99A1E;--today-ink:#FFFFFF;--pat:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg fill='black'%3E%3Cpath d='M30 10l4 11 11 4-11 4-4 11-4-11-11-4 11-4zM90 70l3 8 8 3-8 3-3 8-3-8-8-3 8-3z'/%3E%3C/g%3E%3C/svg%3E")}
+:root.th-namorados{--ginger:#D63A8C;--today-ink:#FFFFFF;--pat:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg fill='black'%3E%3Cpath d='M30 48C14 37 8 29 8 21a10 10 0 0 1 20-3 10 10 0 0 1 20 3c0 8-6 16-18 27zM90 104c-9-6-12-11-12-15a6 6 0 0 1 12-2 6 6 0 0 1 12 2c0 4-3 9-12 15z'/%3E%3C/g%3E%3C/svg%3E")}
+:root.th-halloween body::before{background:#E8742A;opacity:.28}
+:root.th-natal body::before{background:#5FA8D9;opacity:.3}
+:root.th-anonovo body::before{background:#C99A1E;opacity:.3}
+.album-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.album-n{font:700 .95rem var(--display);background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:3px 12px}
+.album-bar{height:8px;border-radius:99px;background:var(--accent-soft);margin:10px 0 12px;overflow:hidden}.album-bar i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .6s}
+.album-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px}
+.fig{aspect-ratio:3/4;border-radius:14px;border:2px solid rgba(0,0,0,.06);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4px 2px;gap:2px;color:#24132A;min-width:0;position:relative}
+.fig svg{width:44px;height:44px;overflow:visible}
+.fig span{font-size:.62rem;font-weight:700;line-height:1.1;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.fig.r-l,.fig.r-b{border-color:#E8B923;box-shadow:0 0 0 2px #FFF3B8 inset}
+.fig.r-s{border-color:#E8742A}
+.fig.r-r{border-color:var(--line)}
+.fig.miss{background:repeating-linear-gradient(45deg,var(--accent-soft) 0 6px,transparent 6px 12px);border:2px dashed var(--line);color:var(--muted)}
+.fig.miss b{font:700 1.4rem var(--display)}
+.album-tip{font-size:.85rem;color:var(--muted);margin:12px 0 0}
+#fig-ov .modal{width:min(340px,100%);text-align:center}
+#fig-why{font:600 1.3rem var(--display);margin:0 0 14px}
+.fig-flip{perspective:900px;width:220px;height:290px;margin:0 auto 16px}
+.fig-in{position:relative;width:100%;height:100%;transition:transform .8s cubic-bezier(.3,1.4,.5,1);transform-style:preserve-3d}
+.fig-flip.open .fig-in{transform:rotateY(180deg)}
+.fig-side{position:absolute;inset:0;border-radius:20px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:14px}
+.fig-back{background:var(--accent);color:var(--accent-ink);font:700 4rem var(--display)}
+.fig-back svg{width:70px;height:70px}
+#fig-front{transform:rotateY(180deg);background:var(--paper);border:3px solid var(--line)}
+.r-l #fig-front,.r-b #fig-front{border-color:#E8B923;box-shadow:0 0 30px rgba(232,185,35,.45)}
+.r-s #fig-front{border-color:#E8742A}
+.fig-big{width:150px;height:150px;border-radius:50%;display:grid;place-items:center}
+.fig-big svg{width:120px;height:120px;overflow:visible}
+#fig-front b{font:600 1.3rem var(--display)}
+.fig-rar{font-size:.85rem;font-weight:700;color:var(--muted)}
+#fig-front small{font-size:.75rem;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.fig-in{transition:none}.sdeco span{animation:none}}
 .foot{text-align:center;color:var(--muted);font-family:var(--hand);font-size:1.25rem}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.confetti{display:none}}
 h1 #title{background:linear-gradient(transparent 62%,var(--accent-soft) 62%);padding:0 4px}
@@ -330,11 +376,12 @@ h1 #title{background:linear-gradient(transparent 62%,var(--accent-soft) 62%);pad
         </form>
       </div>
     </div>
-    <div class="deco" aria-hidden="true"><svg viewBox="0 0 120 60" width="120" height="60"><path d="M30 52C14 41 8 33 8 25a10 10 0 0 1 20-3 10 10 0 0 1 20 3c0 8-6 16-18 27z" fill="var(--accent)"/><path d="M74 30c-9-6-12-11-12-15a6 6 0 0 1 12-2 6 6 0 0 1 12 2c0 4-3 9-12 15z" fill="var(--accent)" opacity=".85"/><path d="M104 10l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" fill="var(--ink)"/><path d="M56 44l1.5 4.5 4.5 1.5-4.5 1.5-1.5 4.5-1.5-4.5-4.5-1.5 4.5-1.5z" fill="var(--paper)"/></svg></div>
+    <div class="deco" id="deco" aria-hidden="true"><svg viewBox="0 0 120 60" width="120" height="60"><path d="M30 52C14 41 8 33 8 25a10 10 0 0 1 20-3 10 10 0 0 1 20 3c0 8-6 16-18 27z" fill="var(--accent)"/><path d="M74 30c-9-6-12-11-12-15a6 6 0 0 1 12-2 6 6 0 0 1 12 2c0 4-3 9-12 15z" fill="var(--accent)" opacity=".85"/><path d="M104 10l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" fill="var(--ink)"/><path d="M56 44l1.5 4.5 4.5 1.5-4.5 1.5-1.5 4.5-1.5-4.5-4.5-1.5 4.5-1.5z" fill="var(--paper)"/></svg></div>
     <button class="snd" id="snd" type="button" aria-pressed="true"><span id="snd-ico"></span><span id="snd-txt">Miados ligados</span></button>
     <div class="next" id="next"></div>
   </header>
 
+  <div class="season" id="season" hidden></div>
   <section class="widgets" id="widgets" aria-label="Widgets"></section>
 
   <section aria-label="Mural de fotos">
@@ -382,6 +429,7 @@ h1 #title{background:linear-gradient(transparent 62%,var(--accent-soft) 62%);pad
   <div class="extras">
     <section class="card pet" id="pet" aria-label="Gatinha virtual"></section>
     <section class="card cycle" id="cycle" aria-label="Ciclo menstrual"></section>
+    <section class="card album" id="album" aria-label="Álbum de figurinhas"></section>
     <section class="card weather" id="weather" aria-label="Clima" hidden></section>
   </div>
   <div class="foot">feita com carinho (e muitos gatinhos)</div>
@@ -405,6 +453,14 @@ h1 #title{background:linear-gradient(transparent 62%,var(--accent-soft) 62%);pad
       <button class="btn primary" type="submit" id="ev-save">Salvar</button>
     </div>
   </form>
+</div>
+
+<div class="overlay" id="fig-ov" hidden>
+  <div class="modal" role="dialog" aria-label="Figurinha">
+    <p id="fig-why"></p>
+    <div class="fig-flip" id="fig-card"><div class="fig-in"><div class="fig-side fig-back" id="fig-back"></div><div class="fig-side" id="fig-front"></div></div></div>
+    <button class="btn primary" type="button" id="fig-ok">Guardar no álbum</button>
+  </div>
 </div>
 
 <div class="overlay lightbox" id="lb" hidden>
@@ -440,6 +496,7 @@ const ACC={
  scarf:'<path d="M13 50q19 9 38 0l-1 6q-18 8-36 0z" fill="#D63A8C" stroke="'+AK+'" stroke-width="1.4" stroke-linejoin="round"/><path d="M40 55l3 9 6-2-4-8z" fill="#B0309B" stroke="'+AK+'" stroke-width="1.4" stroke-linejoin="round"/><path d="M20 53l2 3M28 55l1 3M36 55l-1 3" stroke="#fff" stroke-width="1.2" opacity=".7"/>',
  crown:'<path d="M21 21l2.5-10 5 5.5L32 8l3.5 8.5 5-5.5L43 21z" fill="#F2C14E" stroke="'+AK+'" stroke-width="1.5" stroke-linejoin="round"/><circle cx="32" cy="16" r="1.8" fill="#D63A8C"/>',
  hat:'<ellipse cx="32" cy="19.5" rx="17" ry="3.6" fill="#6E0F73" stroke="'+AK+'" stroke-width="1.4"/><path d="M24 18.5L35 -1l2 7-3 2 6 10.5z" fill="#6E0F73" stroke="'+AK+'" stroke-width="1.4" stroke-linejoin="round"/><path d="M25 15.5h14" stroke="#F39AC9" stroke-width="2.2"/><path d="M41 6l1 2.5 2.5 1-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1z" fill="#F2C14E"/>',
+ santa:'<path d="M17 20.5Q19 6 34 5.5q12 0 17 13l-4 2q-3-7-8-8 3 4 2 8z" fill="#D9363E" stroke="'+AK+'" stroke-width="1.4" stroke-linejoin="round"/><rect x="15" y="17.5" width="34" height="6" rx="3" fill="#FFFFFF" stroke="'+AK+'" stroke-width="1.4"/><circle cx="50" cy="21" r="3.6" fill="#FFFFFF" stroke="'+AK+'" stroke-width="1.4"/>',
  umbrella:'<path d="M4 15a28 13 0 0 1 56 0q-4.7-3-9.3 0-4.7-3-9.4 0-4.6-3-9.3 0-4.7-3-9.3 0-4.7-3-9.4 0-4.6-3-9.3 0z" fill="#8E2C93" stroke="'+AK+'" stroke-width="1.5" stroke-linejoin="round"/><path d="M57 15v34q0 4-4 4" stroke="'+AK+'" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M8 24l-1.5 4M5 33l-1.5 4M60 25l-1.5 4" stroke="#7FC4F0" stroke-width="2" stroke-linecap="round"/>'
 };
 const OUTFITS=[['bow','Lacinho',2],['glasses','Óculos',4],['scarf','Cachecol',7],['crown','Coroa',10],['hat','Chapéu de bruxinha',14]];
@@ -513,11 +570,11 @@ const ready=(async()=>{
     db.collection('photos').onSnapshot(s=>{state.photos=s.docs.map(d=>Object.assign({},d.data(),{id:d.id}));lsWrite();renderMural();renderCal();renderDay();},dbErr);
     db.doc('settings/main').onSnapshot(s=>{const d=s.exists?s.data():null;state.name=(d&&d.name)||'';lsWrite();renderTitle();renderDiary();},dbErr);
     try{const u=await window.claude.use('user');const me=u?await u.id():null;if(me)diaryColl=db.collection('data/users/'+me)}catch(e){}
-    if(diaryColl)diaryColl.onSnapshot(s=>{const m={};let pet=null,cyc=null;s.docs.forEach(d=>{const v=d.data();if(d.id==='gatinho')pet=v;else if(d.id==='ciclo')cyc=v;else if(v&&v.date)m[v.date]=v});state.diary=m;state.pet=pet;state.cycle=cyc;renderDiary();renderCal();renderPet();renderCycle();},dbErr);
+    if(diaryColl)diaryColl.onSnapshot(s=>{const m={};let pet=null,cyc=null,fg=null;s.docs.forEach(d=>{const v=d.data();if(d.id==='figurinhas')fg=v;else if(d.id==='gatinho')pet=v;else if(d.id==='ciclo')cyc=v;else if(v&&v.date)m[v.date]=v});state.diary=m;state.pet=pet;state.cycle=cyc;state.figs=fg;figLoaded=true;renderDiary();renderCal();renderPet();renderCycle();renderAlbum();checkDailyFig();},dbErr);
   }
   if(!diaryColl){try{state.diary=JSON.parse(localStorage.getItem(LS+'-diario')||'{}')||{}}catch(e){state.diary={}}
-    try{state.pet=JSON.parse(localStorage.getItem(LS+'-gatinho')||'null')}catch(e){}try{state.cycle=JSON.parse(localStorage.getItem(LS+'-ciclo')||'null')}catch(e){}
-    renderDiary();renderCal();renderPet();renderCycle()}
+    try{state.pet=JSON.parse(localStorage.getItem(LS+'-gatinho')||'null')}catch(e){}try{state.cycle=JSON.parse(localStorage.getItem(LS+'-ciclo')||'null')}catch(e){}try{state.figs=JSON.parse(localStorage.getItem(LS+'-figurinhas')||'null')}catch(e){}
+    figLoaded=true;renderDiary();renderCal();renderPet();renderCycle();renderAlbum();checkDailyFig()}
 })();
 function dbErr(e){if(e&&e.code!=='revoked')toast('Não consegui atualizar a agenda agora. Recarregue a página.')}
 function writeErr(e){const c=e&&e.code;
@@ -762,14 +819,14 @@ function renderPet(){const el=$('pet');if(!el)return;const p=petNow();
     PET_FURS.map(f=>'<button type="button" data-fur="'+f+'" aria-label="Cor '+f+'" aria-pressed="'+(f===p.fur)+'" style="background:'+f+'"></button>').join('')+'</div><div class="modal-acts"><button class="btn" type="button" id="pet-cancel">Cancelar</button><button class="btn primary" type="button" id="pet-save">Salvar</button></div></div>';return}
   const bar=(lbl,v)=>'<div class="bar"><span>'+lbl+'</span><div class="track"><div class="fill'+(v<30?' low':'')+'" style="width:'+Math.round(v)+'%"></div></div><span>'+Math.round(v)+'%</span></div>';
   el.innerHTML='<div class="xhead"><h3>'+esc(p.name)+', sua gatinha</h3><button type="button" class="mini" id="pet-edit">Editar</button></div>'+
-    '<div class="pet-stage"><button type="button" class="pet-face" id="pet-face" aria-label="Fazer carinho na '+esc(p.name)+'">'+catFace(p.fur,{mood:petMood(p),acc:p.acc?[p.acc]:[]})+'</button><div class="pet-say" id="pet-say"></div></div>'+
+    '<div class="pet-stage"><button type="button" class="pet-face" id="pet-face" aria-label="Fazer carinho na '+esc(p.name)+'">'+catFace(p.fur,{mood:petMood(p),acc:petAcc(p)})+'</button><div class="pet-say" id="pet-say"></div></div>'+
     '<div class="bars">'+bar('Barriguinha',p.food)+bar('Carinho',p.love)+bar('Diversão',p.fun)+'</div>'+
     '<div class="pacts"><button type="button" data-pet="food"><b>🐟</b>Petisco</button><button type="button" data-pet="love"><b>🤍</b>Carinho</button><button type="button" data-pet="fun"><b>🧶</b>Brincar</button></div>'+
     '<div class="pfoot">'+(p.streak>1?p.streak+' dias seguidos cuidando da '+esc(p.name)+' 💜':'Cuide dela todo dia pra ela ficar feliz')+'</div>';
   $('pet-say').textContent=petLine(p);}
 function floatHearts(n){const st=document.querySelector('.pet-stage');if(!st)return;for(let i=0;i<n;i++){const h=document.createElement('span');h.className='floaty';h.innerHTML=heart(['#D63A8C','#B0309B','#F39AC9'][i%3]);
   h.style.left=(40+Math.random()*30)+'px';h.style.setProperty('--dx',(Math.random()*60-30)+'px');h.style.animationDelay=(i*.12)+'s';st.appendChild(h);setTimeout(()=>h.remove(),1500)}}
-async function petAct(kind,amt){const p=petNow();p[kind]=Math.min(100,p[kind]+amt);
+async function petAct(kind,amt){figMilestone('mel');const p=petNow();p[kind]=Math.min(100,p[kind]+amt);
   if(p.lastDay!==todayStr){const y=ymd(new Date(today.getFullYear(),today.getMonth(),today.getDate()-1));p.streak=p.lastDay===y?(p.streak||0)+1:1;p.lastDay=todayStr;const before=p.best||0;p.best=Math.max(before,p.streak);const un=OUTFITS.find(o=>o[2]>before&&o[2]<=p.best);if(un)setTimeout(()=>toast('A '+p.name+' ganhou: '+un[1]+'! Vista ela em Editar.','party'),900)}
   state.pet=p;renderPet();const f=$('pet-face');if(f){f.classList.add('hop');}floatHearts(kind==='love'?5:3);
   try{await savePrivate('gatinho',p)}catch(err){writeErr(err)}}
@@ -827,7 +884,7 @@ function renderCycle(){const el=$('cycle');if(!el)return;buildCycleCache();const
     '<label class="chk"><input type="checkbox" id="cy-show"'+(c.show?' checked':'')+'> Mostrar gotinhas no calendário</label></div>'+
     '<div class="cy-note">Dica: escolha um dia no calendário pra marcar inícios passados. É só uma estimativa com base nos seus registros e não serve como método contraceptivo.</div>';
   const care=periodCare();el.innerHTML='<div class="xhead"><h3>Meu ciclo 🌸</h3>'+lock+'</div>'+(care?'<div class="care">'+catFace(petNow().fur,{mood:'love'})+'<span>'+esc(care)+'</span></div>':'')+body;}
-async function saveCycle(c,msg){state.cycle=c;cycleCache=null;renderCycle();renderCal();try{await savePrivate('ciclo',c);if(msg)toast(msg,'love',true)}catch(err){writeErr(err)}}
+async function saveCycle(c,msg){state.cycle=c;cycleCache=null;renderCycle();renderCal();try{await savePrivate('ciclo',c);figMilestone('ciclo');if(msg)toast(msg,'love',true)}catch(err){writeErr(err)}}
 document.addEventListener('click',e=>{const c=cyc();
   if(e.target.closest('#cy-today')){c.starts=[...new Set([...c.starts,todayStr])].sort();saveCycle(c,'Anotado. Se cuida hoje, viu? 💜');return}
   if(e.target.closest('#cy-mark')){c.starts=[...new Set([...c.starts,state.sel])].sort();saveCycle(c,'Início marcado em '+fmtD(state.sel));return}
@@ -872,7 +929,7 @@ async function flushDiary(){clearTimeout(diaryT);if(!diaryDirty)return;diaryDirt
   try{await ready;
     if(diaryColl){if(!body.text&&!body.mood)await dbCall(()=>diaryColl.doc('d'+d).delete());else await dbCall(()=>diaryColl.doc('d'+d).set(body))}
     else{if(!body.text&&!body.mood)delete state.diary[d];else state.diary[d]=body;try{localStorage.setItem(LS+'-diario',JSON.stringify(state.diary))}catch(e){warnLocal()}renderCal()}
-    if(diaryShown===d)$('diary-status').textContent='Guardado no diário ✓';
+    if(diaryShown===d)$('diary-status').textContent='Guardado no diário ✓';figMilestone('diario');
   }catch(err){diaryDirty=true;$('diary-status').textContent='Não salvou ainda';writeErr(err)}}
 $('diary-text').addEventListener('input',()=>{diaryDirty=true;$('diary-status').textContent='Escrevendo...';clearTimeout(diaryT);diaryT=setTimeout(flushDiary,1200)});
 $('diary-text').addEventListener('blur',flushDiary);
@@ -908,7 +965,7 @@ $('ev-form').addEventListener('submit',async e=>{e.preventDefault();
     createdAt:editing&&editing.createdAt?editing.createdAt:Date.now()};
   const id=editing?editing.id:uid();const wasNew=!editing;
   $('ev-save').disabled=true;
-  try{await saveDoc('events',id,body);closeForm();state.sel=date;const d=parse(date);state.y=d.getFullYear();state.m=d.getMonth();render();toast(wasNew?'Compromisso salvo, miau!':'Compromisso atualizado',wasNew?'love':'wink')}
+  try{await saveDoc('events',id,body);closeForm();figMilestone('evento');state.sel=date;const d=parse(date);state.y=d.getFullYear();state.m=d.getMonth();render();toast(wasNew?'Compromisso salvo, miau!':'Compromisso atualizado',wasNew?'love':'wink')}
   catch(err){writeErr(err)}finally{$('ev-save').disabled=false}
 });
 
@@ -934,7 +991,7 @@ $('photo-input').addEventListener('change',async e=>{const files=[...e.target.fi
   await ready;let ok=0;
   for(const f of files){try{const src=await shrink(f,db?900:560,db?.82:.72);const body={src,caption:'',createdAt:Date.now()};if(forDate)body.date=forDate;await saveDoc('photos',uid(),body);ok++}
     catch(err){if(err&&err.code)writeErr(err);else toast('Não consegui abrir essa imagem. Tente uma foto JPG ou PNG.')}}
-  if(ok){renderMural();renderCal();renderDay();toast(forDate?(ok>1?ok+' fotos guardadas neste dia':'Foto guardada neste dia'):(ok>1?ok+' fotos adicionadas':'Foto adicionada ao mural'),'love')}
+  if(ok){figMilestone('foto');renderMural();renderCal();renderDay();toast(forDate?(ok>1?ok+' fotos guardadas neste dia':'Foto guardada neste dia'):(ok>1?ok+' fotos adicionadas':'Foto adicionada ao mural'),'love')}
 });
 let lbId=null,lbArm=false;
 function openPhoto(id){const p=state.photos.find(x=>x.id===id);if(!p)return;lbId=id;lbArm=false;$('lb-del').textContent='Remover foto';
@@ -991,19 +1048,19 @@ function checkSoon(){const now=new Date();const nowMin=now.getHours()*60+now.get
   eventsOn(ds).forEach(e=>{if(!e.time)return;const [h,m]=e.time.split(':').map(Number);const diff=h*60+m-nowMin;const key=e.id+ds;
     if(diff>=0&&diff<=15&&!reminded.has(key)){reminded.add(key);toast(diff===0?'Agora: '+e.title+'!':'Daqui a '+diff+' min: '+e.title,'surprised')}})}
 setInterval(checkSoon,60000);
-$('mascot').innerHTML=catFace('#2A2030',{mood:'happy'});
+
 /* ---------- widgets ---------- */
 const WG_ALL=[['hoje','Hoje'],['mel','Mel'],['clima','Clima'],['ciclo','Ciclo'],['conta','Contagem'],['diario','Diário']];
 var wgHidden=[];try{wgHidden=JSON.parse(localStorage.getItem(LS+'-widgets')||'[]')||[]}catch(e){}
 var wgEditing=false;
 function scrollToEl(id){const el=$(id);if(el)el.scrollIntoView({behavior:'smooth',block:'center'})}
 function renderWidgets(){const box=$('widgets');if(!box)return;
-  if(wgEditing){box.innerHTML='<div class="wg-edit"><b>Escolha os widgets</b>'+WG_ALL.map(([id,l])=>'<label><input type="checkbox" data-wg="'+id+'"'+(wgHidden.includes(id)?'':' checked')+'> '+l+'</label>').join('')+'<button type="button" class="btn primary" id="wg-done">Pronto</button></div>';return}
+  if(wgEditing){box.innerHTML='<div class="wg-edit"><b>Escolha os widgets</b>'+WG_ALL.map(([id,l])=>'<label><input type="checkbox" data-wg="'+id+'"'+(wgHidden.includes(id)?'':' checked')+'> '+l+'</label>').join('')+'<label><input type="checkbox" id="th-on"'+(themesOn?' checked':'')+'> Temas de datas especiais</label><button type="button" class="btn primary" id="wg-done">Pronto</button></div>';return}
   const tiles=[];const p=petNow();
   if(!wgHidden.includes('hoje')){const ev=eventsOn(todayStr);
     tiles.push('<button type="button" class="wg" data-go="hoje"><span class="wg-l">Hoje</span><span class="wg-big">'+ev.length+'</span><span class="wg-s">'+(ev.length?esc((ev[0].time?ev[0].time+' ':'')+ev[0].title):'dia livre 😴')+'</span></button>')}
   if(!wgHidden.includes('mel')){const low=Math.min(p.food,p.love,p.fun);
-    tiles.push('<button type="button" class="wg" data-go="mel"><span class="wg-l">'+esc(p.name)+'</span><span class="wg-cat">'+catFace(p.fur,{mood:petMood(p),acc:p.acc?[p.acc]:[]})+'</span><span class="wg-bar"><i style="width:'+Math.round(low)+'%"></i></span></button>')}
+    tiles.push('<button type="button" class="wg" data-go="mel"><span class="wg-l">'+esc(p.name)+'</span><span class="wg-cat">'+catFace(p.fur,{mood:petMood(p),acc:petAcc(p)})+'</span><span class="wg-bar"><i style="width:'+Math.round(low)+'%"></i></span></button>')}
   if(!wgHidden.includes('clima')&&CAN_FETCH){const d=wx&&wx.data&&wx.data.current;
     if(d){const w=WMO[d.weather_code]||['—','cloud'];const rainy=w[1]==='rain';const t=Math.round(d.temperature_2m);
       tiles.push('<button type="button" class="wg" data-go="clima"><span class="wg-l">'+esc((wx.loc.name||'').split(',')[0])+'</span><span class="wg-row"><span class="wg-big">'+t+'°</span><span class="wg-mini">'+catFace(p.fur,{mood:'happy',acc:rainy?['umbrella']:t<=16?['scarf']:t>=28?['sunglasses']:[]})+'</span></span><span class="wg-s">'+w[0]+'</span></button>')}
@@ -1019,7 +1076,7 @@ function renderWidgets(){const box=$('widgets');if(!box)return;
   box.innerHTML='<div class="wg-grid">'+tiles.join('')+'</div><button type="button" class="mini wg-cfg" id="wg-cfg">Editar widgets</button>';}
 document.addEventListener('click',e=>{
   if(e.target.closest('#wg-cfg')){wgEditing=true;renderWidgets();return}
-  if(e.target.closest('#wg-done')){wgHidden=[...document.querySelectorAll('[data-wg]')].filter(x=>!x.checked).map(x=>x.dataset.wg);try{localStorage.setItem(LS+'-widgets',JSON.stringify(wgHidden))}catch(err){}wgEditing=false;renderWidgets();return}
+  if(e.target.closest('#wg-done')){const th=$('th-on');if(th&&th.checked!==themesOn){themesOn=th.checked;try{localStorage.setItem(LS+'-temas',themesOn?'on':'off')}catch(err){}applySeason();renderPet()}wgHidden=[...document.querySelectorAll('[data-wg]')].filter(x=>!x.checked).map(x=>x.dataset.wg);try{localStorage.setItem(LS+'-widgets',JSON.stringify(wgHidden))}catch(err){}wgEditing=false;renderWidgets();return}
   const g=e.target.closest('.wg[data-go]');if(!g)return;const t=g.dataset.go;
   if(t==='hoje'){state.sel=todayStr;state.y=today.getFullYear();state.m=today.getMonth();renderCal();renderDay();scrollToEl('day-title')}
   else if(t==='mel'){scrollToEl('pet')}else if(t==='clima'){scrollToEl('weather')}else if(t==='ciclo'){scrollToEl('cycle')}
@@ -1032,7 +1089,110 @@ render=function(){_r1();renderWidgets()};renderPet=function(){_r2();renderWidget
 function handleHash(){const h=location.hash.slice(1);if(!h)return;
   if(h==='novo')setTimeout(()=>openForm(null,todayStr),300);else if(h==='diario')setTimeout(()=>{scrollToEl('diary-text');$('diary-text').focus()},400);else if(h==='mel')setTimeout(()=>scrollToEl('pet'),400);
   try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}}
+/* ---------- temas de datas especiais ---------- */
+var themesOn=true;try{themesOn=localStorage.getItem(LS+'-temas')!=='off'}catch(e){}
+function seasonOf(d){const md=d.slice(5);
+  if(md>='10-01'&&md<='10-31')return 'halloween';
+  if(md>='12-01'&&md<='12-26')return 'natal';
+  if(md>='12-27'||md<='01-01')return 'anonovo';
+  if(md>='06-01'&&md<='06-12')return 'namorados';
+  return null}
+const SEASON=(()=>{let d=todayStr;try{const q=new URLSearchParams(location.search).get('tema-data');if(q&&/^\d{4}-\d{2}-\d{2}$/.test(q))d=q}catch(e){}return {date:d,id:seasonOf(d)}})();
+const curSeason=()=>themesOn?SEASON.id:null;
+function seasonAcc(){return {halloween:'hat',natal:'santa',namorados:'bow'}[curSeason()]||null}
+function petAcc(p){return p.acc?[p.acc]:(seasonAcc()?[seasonAcc()]:[])}
+const BAT=c=>'<svg viewBox="0 0 64 32" aria-hidden="true"><path d="M32 10c2-4 4-5 4-5s1 3 0 6c6-2 12-8 16-10-1 5 2 9 7 10-4 1-6 4-6 8-3-3-7-3-10 0-1-3-4-5-7-4-1 3-3 6-4 8-1-2-3-5-4-8-3-1-6 1-7 4-3-3-7-3-10 0 0-4-2-7-6-8 5-1 8-5 7-10 4 2 10 8 16 10-1-3 0-6 0-6s2 1 4 5z" fill="'+c+'"/></svg>';
+const PUMPKIN='<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M22 8q2-6 7-6" stroke="#4F7A3A" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="14" cy="28" rx="10" ry="14" fill="#E8742A"/><ellipse cx="34" cy="28" rx="10" ry="14" fill="#E8742A"/><ellipse cx="24" cy="28" rx="10" ry="15" fill="#F28C38"/><path d="M17 26l4-4 3 4zM27 26l3-4 4 4zM17 34q7 6 14 0l-3 1-2-2-2 2-2-2-2 2z" fill="#3A1F0E"/></svg>';
+const FLAKE='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M3.3 7l17.4 10M3.3 17l17.4-10M9 3l3 3 3-3M9 21l3-3 3 3" stroke="#9FC9EE" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>';
+const STAR='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1l2.6 7.4L22 11l-7.4 2.6L12 21l-2.6-7.4L2 11l7.4-2.6z" fill="#F2C14E"/></svg>';
+const TREE='<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 3l9 13h-5l9 12h-6l9 12H8l9-12h-6l9-12h-5z" fill="#3F9E78"/><rect x="21" y="40" width="6" height="6" fill="#8A5A3B"/><circle cx="20" cy="22" r="2" fill="#D63A8C"/><circle cx="29" cy="31" r="2" fill="#F2C14E"/><circle cx="18" cy="35" r="2" fill="#7FC4F0"/><path d="M24 0l1.5 3.5 3.5.5-2.6 2.4.7 3.6-3.1-1.8-3.1 1.8.7-3.6L19 4l3.5-.5z" fill="#F2C14E"/></svg>';
+function seasonInfo(){const s=curSeason();if(!s)return null;const d=SEASON.date,y=+d.slice(0,4);
+  const left=t=>diffDays(d,t);
+  if(s==='halloween'){const n=left(y+'-10-31');return {icon:PUMPKIN,text:n===0?'Feliz Halloween! 🦇':'Mês do Halloween · faltam '+n+(n>1?' dias':' dia'),deco:[BAT('#4B2A55'),PUMPKIN,BAT('#6E0F73')],float:i=>i%3===2?PUMPKIN:BAT(i%2?'#6E0F73':'#3A2142')}}
+  if(s==='natal'){const n=left(y+'-12-25');return {icon:TREE,text:n===0?'Feliz Natal! 🎄':n<0?'Ainda é clima de Natal 🎄':'Clima de Natal · faltam '+n+(n>1?' dias':' dia'),deco:[TREE,FLAKE,STAR],float:()=>FLAKE}}
+  if(s==='anonovo')return {icon:STAR,text:d.slice(5)==='01-01'?'Feliz Ano Novo! ✨':'Chegando o Ano Novo ✨',deco:[STAR,STAR,STAR],float:()=>STAR};
+  if(s==='namorados'){const n=left(y+'-06-12');return {icon:heart('#D63A8C'),text:n===0?'Feliz Dia dos Namorados! 💘':'Dia dos Namorados · faltam '+n+(n>1?' dias':' dia'),deco:[heart('#D63A8C'),heart('#B0309B'),heart('#F39AC9')],float:i=>heart(['#D63A8C','#F39AC9','#B0309B'][i%3])}}
+  return null}
+function applySeason(){const root=document.documentElement;['halloween','natal','anonovo','namorados'].forEach(x=>root.classList.remove('th-'+x));
+  document.querySelectorAll('.sfloat').forEach(x=>x.remove());const info=seasonInfo();const s=curSeason();
+  const ban=$('season');if(!info){ban.hidden=true;$('deco').innerHTML=DEFAULT_DECO;renderMascot();return}
+  root.classList.add('th-'+s);ban.hidden=false;ban.innerHTML='<span class="sic">'+info.icon+'</span><span>'+esc(info.text)+'</span>';
+  $('deco').innerHTML='<div class="sdeco">'+info.deco.map((x,i)=>'<span style="--i:'+i+'">'+x+'</span>').join('')+'</div>';
+  const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduce)for(let i=0;i<7;i++){const f=document.createElement('span');f.className='sfloat';f.setAttribute('aria-hidden','true');f.innerHTML=info.float(i);
+    f.style.cssText='left:'+(5+Math.random()*90)+'%;top:'+(10+Math.random()*80)+'%;animation-delay:'+(-Math.random()*12)+'s;animation-duration:'+(10+Math.random()*8)+'s;--s:'+(0.7+Math.random()*0.7);document.body.appendChild(f)}
+  renderMascot();
+  if(s==='halloween'&&SEASON.date.slice(5)==='10-31'||s==='natal'&&SEASON.date.slice(5)==='12-25'||s==='anonovo'&&SEASON.date.slice(5)==='01-01'||s==='namorados'&&SEASON.date.slice(5)==='06-12'){setTimeout(confetti,1200)}}
+let DEFAULT_DECO='';
+function renderMascot(){const p=petNow();$('mascot').innerHTML=catFace('#2A2030',{mood:'happy',acc:seasonAcc()?[seasonAcc()]:[]})}
 
+/* ---------- álbum de figurinhas ---------- */
+const FIGS=[
+ {id:'mel',n:'Mel',fur:'#2A2030',mood:'happy',bg:'#F5E1FA',r:'c'},
+ {id:'laranjinha',n:'Laranjinha',fur:'#E9A15E',mood:'open',stripes:1,bg:'#FFE6CC',r:'c'},
+ {id:'nuvem',n:'Nuvem',fur:'#FBF6F1',mood:'love',bg:'#DDEFFC',r:'c'},
+ {id:'cinzinha',n:'Cinzinha',fur:'#A9A3B2',mood:'wink',bg:'#E7E3EE',r:'c'},
+ {id:'biscoito',n:'Biscoito',fur:'#EED7B4',mood:'happy',bg:'#FBEFD9',r:'c'},
+ {id:'canela',n:'Canela',fur:'#C79A73',mood:'surprised',bg:'#F4E1D2',r:'c'},
+ {id:'dorminhoca',n:'Dorminhoca',fur:'#A9A3B2',mood:'sleepy',bg:'#E2DDF7',r:'c'},
+ {id:'brava',n:'Bravinha',fur:'#2A2030',mood:'angry',bg:'#FBD9E3',r:'c'},
+ {id:'tristinha',n:'Tristinha',fur:'#FBF6F1',mood:'sad',bg:'#DCE8F7',r:'c'},
+ {id:'nerd',n:'Nerdinha',fur:'#C79A73',mood:'happy',acc:['glasses'],bg:'#E3F2E1',r:'r'},
+ {id:'chique',n:'Chiquérrima',fur:'#2A2030',mood:'wink',acc:['sunglasses'],bg:'#FFE3F1',r:'r'},
+ {id:'friorenta',n:'Friorenta',fur:'#E9A15E',mood:'open',stripes:1,acc:['scarf'],bg:'#DDEFFC',r:'r'},
+ {id:'praia',n:'Praiana',fur:'#EED7B4',mood:'happy',acc:['sunglasses'],bg:'#FFF1C7',r:'r'},
+ {id:'chuva',n:'Chuvinha',fur:'#A9A3B2',mood:'surprised',acc:['umbrella'],bg:'#D6E6F5',r:'r'},
+ {id:'apaixonada',n:'Apaixonada',fur:'#FBF6F1',mood:'love',acc:['bow'],bg:'#FFD6EA',r:'r'},
+ {id:'festa',n:'Festeira',fur:'#C79A73',mood:'party',bg:'#F7E4FF',r:'r'},
+ {id:'rainha',n:'Rainha',fur:'#2A2030',mood:'happy',acc:['crown'],bg:'#FFEFB8',r:'l'},
+ {id:'princesa',n:'Princesa',fur:'#FBF6F1',mood:'wink',acc:['crown','bow'],bg:'#FFE0F0',r:'l'},
+ {id:'bruxa',n:'Bruxinha',fur:'#2A2030',mood:'wink',acc:['hat'],bg:'#FFD9B8',r:'s',s:'halloween'},
+ {id:'abobora',n:'Abóbora',fur:'#E9A15E',mood:'party',stripes:1,acc:['hat'],bg:'#FFE1C2',r:'s',s:'halloween'},
+ {id:'noel',n:'Noelzinha',fur:'#FBF6F1',mood:'happy',acc:['santa'],bg:'#F9D9DB',r:'s',s:'natal'},
+ {id:'rena',n:'Renazinha',fur:'#C79A73',mood:'open',acc:['scarf'],bg:'#DDF0E4',r:'s',s:'natal'},
+ {id:'cupido',n:'Cupido',fur:'#FBF6F1',mood:'love',acc:['bow'],bg:'#FFD1E6',r:'s',s:'namorados'},
+ {id:'aniversario',n:'Aniversariante',fur:'#2A2030',mood:'party',acc:['crown'],bg:'#F3D6FF',r:'b'}];
+const RAR={c:['Comum',''],r:['Rara','✨'],l:['Lendária','👑'],s:['Especial','🎀'],b:['Aniversário','🎂']};
+const SEASON_NAME={halloween:'no Halloween (outubro)',natal:'no Natal (dezembro)',namorados:'nos Namorados (junho)'};
+const isBirthday=()=>SEASON.date.slice(5)==='11-19';
+var figLoaded=false,figChecked=false;
+function figs(){const f=Object.assign({owned:[],got:{},ms:{},lastDaily:''},state.figs||{});f.owned=f.owned.slice();f.got=Object.assign({},f.got);f.ms=Object.assign({},f.ms);return f}
+function figFace(x,big){return catFace(x.fur,{mood:x.mood,stripes:!!x.stripes,acc:x.acc||[]})}
+function pickFig(f){if(isBirthday()&&!f.owned.includes('aniversario'))return 'aniversario';
+  const pool=FIGS.filter(x=>!f.owned.includes(x.id)&&x.r!=='b'&&(!x.s||x.s===SEASON.id));
+  if(!pool.length)return null;const w=x=>x.r==='s'?10:x.r==='l'?1:x.r==='r'?3:6;
+  let t=pool.reduce((a,x)=>a+w(x),0)*Math.random();for(const x of pool){t-=w(x);if(t<=0)return x.id}return pool[0].id}
+async function grantFig(why){if(!figLoaded)return;const f=figs();const id=pickFig(f);
+  if(!id){if(why==='daily'){f.lastDaily=todayStr;state.figs=f;renderAlbum();try{await savePrivate('figurinhas',f)}catch(e){}}return}
+  f.owned.push(id);f.got[id]=todayStr;if(why==='daily')f.lastDaily=todayStr;else f.ms[why]=todayStr;
+  state.figs=f;renderAlbum();showFig(id,why);try{await savePrivate('figurinhas',f)}catch(err){writeErr(err)}}
+function figMilestone(key){if(!figLoaded)return;const f=figs();if(f.ms[key])return;setTimeout(()=>grantFig(key),900)}
+function checkDailyFig(){if(!figLoaded||figChecked)return;figChecked=true;const f=figs();
+  if(f.lastDaily!==todayStr||(isBirthday()&&!f.owned.includes('aniversario')))setTimeout(()=>grantFig('daily'),2600)}
+const WHY={daily:'Figurinha do dia!',evento:'Primeiro compromisso salvo!',diario:'Primeira página do diário!',foto:'Primeira foto guardada!',mel:'Você cuidou da Mel!',ciclo:'Primeiro registro do ciclo!'};
+function showFig(id,why){const x=FIGS.find(y=>y.id===id);if(!x)return;const o=$('fig-ov');const r=RAR[x.r];
+  $('fig-why').textContent=why?(WHY[why]||'Figurinha nova!'):'Sua figurinha';
+  $('fig-card').className='fig-flip r-'+x.r+(why?'':' open');
+  $('fig-front').innerHTML='<div class="fig-big" style="background:'+x.bg+'">'+figFace(x)+'</div><b>'+esc(x.n)+'</b><span class="fig-rar">'+r[1]+' '+r[0]+'</span>'+(x.s?'<small>Só aparece '+SEASON_NAME[x.s]+'</small>':'');
+  o.hidden=false;
+  if(why){setTimeout(()=>{$('fig-card').classList.add('open');playCat(x.r==='l'||x.r==='b'||x.r==='s'?'party':'mew');if(x.r!=='c'&&x.r!=='r')confetti()},700)}
+  setTimeout(()=>$('fig-ok').focus(),50)}
+function closeFig(){$('fig-ov').hidden=true}
+function renderAlbum(){const el=$('album');if(!el)return;const f=figs();const n=f.owned.length;
+  let h='<div class="album-head"><h3>Álbum de figurinhas</h3><span class="album-n">'+n+'/'+FIGS.length+'</span></div>'+
+   '<div class="album-bar"><i style="width:'+Math.round(n/FIGS.length*100)+'%"></i></div><div class="album-grid">';
+  FIGS.forEach(x=>{const has=f.owned.includes(x.id);
+    h+=has?'<button type="button" class="fig r-'+x.r+'" data-fig="'+x.id+'" style="background:'+x.bg+'" aria-label="'+esc(x.n)+'">'+figFace(x)+'<span>'+esc(x.n)+'</span></button>'
+      :'<div class="fig miss" aria-label="Figurinha que falta"><b>?</b><span>'+(x.s?{halloween:'🎃',natal:'🎄',namorados:'💘'}[x.s]:x.r==='b'?'🎂':x.r==='l'?'👑':'')+'</span></div>'});
+  h+='</div><p class="album-tip">'+(n===FIGS.length?'Álbum completo! Você é a dona de todos os gatinhos 👑':
+    f.lastDaily===todayStr?'Volte amanhã para ganhar mais uma. Salvar compromissos, fotos e páginas do diário também dá figurinhas!':'Abra a agenda todo dia para ganhar uma figurinha nova.')+'</p>';
+  el.innerHTML=h}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-fig]');if(b){showFig(b.dataset.fig,null);return}
+  if(e.target.closest('#fig-ok')||e.target.id==='fig-ov')closeFig()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('fig-ov').hidden)closeFig()});
+
+$('fig-back').innerHTML=paw?paw('#FFFFFF'):'?';
+DEFAULT_DECO=$('deco').innerHTML;applySeason();renderAlbum();
 renderLegend();renderAll();handleHash();addEventListener('hashchange',handleHash);
 ready.then(()=>{if(!db)setTimeout(()=>{maybeGreet();checkSoon()},700)});
 $('mascot').addEventListener('click',()=>maybeGreet(true));$('mascot').style.cursor='pointer';
