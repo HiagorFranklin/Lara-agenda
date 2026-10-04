@@ -26,5 +26,40 @@
    "type": "image/png",
    "purpose": "maskable"
   }
+ ],
+ "shortcuts": [
+  {
+   "name": "Novo compromisso",
+   "short_name": "Novo",
+   "url": "./#novo",
+   "icons": [
+    {
+     "src": "icon-192.png",
+     "sizes": "192x192"
+    }
+   ]
+  },
+  {
+   "name": "Escrever no diário",
+   "short_name": "Diário",
+   "url": "./#diario",
+   "icons": [
+    {
+     "src": "icon-192.png",
+     "sizes": "192x192"
+    }
+   ]
+  },
+  {
+   "name": "Cuidar da Mel",
+   "short_name": "Mel",
+   "url": "./#mel",
+   "icons": [
+    {
+     "src": "icon-192.png",
+     "sizes": "192x192"
+    }
+   ]
+  }
  ]
 }

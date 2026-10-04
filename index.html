@@ -125,7 +125,7 @@ h1{font-family:var(--display);font-weight:700;font-size:clamp(1.7rem,4.6vw,2.6re
 .up .none{color:var(--muted);font-size:.9rem}
 
 /* Modais */
-.overlay{position:fixed;inset:0;z-index:20;background:rgba(40,20,30,.45);display:grid;place-items:center;padding:16px;overflow-y:auto}
+.overlay{position:fixed;inset:0;z-index:35;background:rgba(40,20,30,.45);display:grid;place-items:center;padding:16px;overflow-y:auto}
 .modal{background:var(--paper);color:var(--ink);border-radius:26px;width:min(480px,100%);padding:22px;box-shadow:0 24px 60px -20px rgba(0,0,0,.5);position:relative}
 .modal h2{font-family:var(--display);font-weight:600;margin:0 0 14px;font-size:1.4rem;display:flex;align-items:center;gap:10px}
 .modal h2 svg{width:40px;height:40px}
@@ -150,7 +150,7 @@ h1{font-family:var(--display);font-weight:700;font-size:clamp(1.7rem,4.6vw,2.6re
 .lightbox img{width:100%;border-radius:14px;display:block;max-height:65vh;object-fit:contain;background:var(--bg)}
 .lightbox .cap{font-family:var(--hand);font-size:1.6rem;text-align:center;margin:8px 0}
 
-.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:700;font-size:.9rem;box-shadow:var(--shadow);max-width:calc(100% - 32px);text-align:center}
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:45;background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-weight:700;font-size:.9rem;box-shadow:var(--shadow);max-width:calc(100% - 32px);text-align:center}
 .toast{display:flex;align-items:center;gap:10px;padding:6px 18px 6px 8px;border-radius:22px;width:max-content;text-align:left;animation:pop .45s cubic-bezier(.3,1.6,.5,1)}
 .toast .tcat{flex:none;width:40px;height:40px;animation:bob 1.2s ease-in-out infinite}
 .toast .tcat svg{width:40px;height:40px}
@@ -173,7 +173,7 @@ h1{font-family:var(--display);font-weight:700;font-size:clamp(1.7rem,4.6vw,2.6re
 .bubble .bacts button.go{background:var(--accent);color:var(--accent-ink)}
 @media (max-width:640px){.toast{top:calc(14px + env(safe-area-inset-top,0px));bottom:auto}}
 @keyframes slidein{0%{transform:translateY(120%);opacity:0}100%{transform:none;opacity:1}}
-.confetti{position:fixed;inset:0;pointer-events:none;z-index:40;overflow:hidden}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden}
 .confetti i{position:absolute;top:-30px;font-style:normal;line-height:0;animation:fall linear forwards}
 .confetti i svg{width:100%;height:100%}
 @keyframes fall{to{transform:translateY(110vh) rotate(var(--rot))}}
@@ -286,6 +286,25 @@ h1{font-family:var(--display);font-weight:700;font-size:clamp(1.7rem,4.6vw,2.6re
 .wx-row{display:grid;grid-template-columns:70px minmax(0,1fr) auto;gap:8px;padding:6px 0;border-top:1px dashed var(--line);font-size:.9rem;font-variant-numeric:tabular-nums}
 .wx-row span:last-child{color:var(--muted);font-weight:700}
 .pet-face svg,.outfits svg{overflow:visible}
+.widgets{display:flex;flex-direction:column;gap:6px}
+.wg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+@media (max-width:440px){.wg-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}
+.wg{border:none;background:var(--paper);color:var(--ink);border-radius:24px;padding:12px 14px;min-height:118px;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;text-align:left;box-shadow:var(--shadow);min-width:0;transition:transform .15s}
+.wg:hover{transform:translateY(-2px)}
+.wg:active{transform:scale(.97)}
+.wg-l{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wg-big{font-family:var(--display);font-size:2.2rem;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.wg-s{font-size:.8rem;font-weight:700;color:var(--muted);line-height:1.2;max-width:100%;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.wg-cat{width:60px;height:60px;align-self:center}.wg-cat svg{width:60px;height:60px;overflow:visible}
+.wg-row{display:flex;align-items:center;gap:8px}
+.wg-mini{width:42px;height:42px}.wg-mini svg{width:42px;height:42px;overflow:visible}
+.wg-bar{width:100%;height:8px;border-radius:99px;background:var(--bg);overflow:hidden}.wg-bar i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.wg-cy{background:#FBE3EE;color:#5A1838}.wg-cy .wg-l{color:#C2386F}.wg-cy .wg-s{color:#8A4A66}
+.wg-cfg{align-self:flex-end}
+.wg-edit{background:var(--paper);border-radius:20px;padding:14px;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;box-shadow:var(--shadow)}
+.wg-edit b{width:100%;font-family:var(--display)}
+.wg-edit label{display:flex;gap:6px;align-items:center;font-weight:700}
+.wg-edit input{width:18px;height:18px;accent-color:var(--accent)}
 .foot{text-align:center;color:var(--muted);font-family:var(--hand);font-size:1.25rem}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.confetti{display:none}}
 h1 #title{background:linear-gradient(transparent 62%,var(--accent-soft) 62%);padding:0 4px}
@@ -315,6 +334,8 @@ h1 #title{background:linear-gradient(transparent 62%,var(--accent-soft) 62%);pad
     <button class="snd" id="snd" type="button" aria-pressed="true"><span id="snd-ico"></span><span id="snd-txt">Miados ligados</span></button>
     <div class="next" id="next"></div>
   </header>
+
+  <section class="widgets" id="widgets" aria-label="Widgets"></section>
 
   <section aria-label="Mural de fotos">
     <div class="mural" id="mural"></div>
@@ -971,7 +992,48 @@ function checkSoon(){const now=new Date();const nowMin=now.getHours()*60+now.get
     if(diff>=0&&diff<=15&&!reminded.has(key)){reminded.add(key);toast(diff===0?'Agora: '+e.title+'!':'Daqui a '+diff+' min: '+e.title,'surprised')}})}
 setInterval(checkSoon,60000);
 $('mascot').innerHTML=catFace('#2A2030',{mood:'happy'});
-renderLegend();renderAll();
+/* ---------- widgets ---------- */
+const WG_ALL=[['hoje','Hoje'],['mel','Mel'],['clima','Clima'],['ciclo','Ciclo'],['conta','Contagem'],['diario','Diário']];
+var wgHidden=[];try{wgHidden=JSON.parse(localStorage.getItem(LS+'-widgets')||'[]')||[]}catch(e){}
+var wgEditing=false;
+function scrollToEl(id){const el=$(id);if(el)el.scrollIntoView({behavior:'smooth',block:'center'})}
+function renderWidgets(){const box=$('widgets');if(!box)return;
+  if(wgEditing){box.innerHTML='<div class="wg-edit"><b>Escolha os widgets</b>'+WG_ALL.map(([id,l])=>'<label><input type="checkbox" data-wg="'+id+'"'+(wgHidden.includes(id)?'':' checked')+'> '+l+'</label>').join('')+'<button type="button" class="btn primary" id="wg-done">Pronto</button></div>';return}
+  const tiles=[];const p=petNow();
+  if(!wgHidden.includes('hoje')){const ev=eventsOn(todayStr);
+    tiles.push('<button type="button" class="wg" data-go="hoje"><span class="wg-l">Hoje</span><span class="wg-big">'+ev.length+'</span><span class="wg-s">'+(ev.length?esc((ev[0].time?ev[0].time+' ':'')+ev[0].title):'dia livre 😴')+'</span></button>')}
+  if(!wgHidden.includes('mel')){const low=Math.min(p.food,p.love,p.fun);
+    tiles.push('<button type="button" class="wg" data-go="mel"><span class="wg-l">'+esc(p.name)+'</span><span class="wg-cat">'+catFace(p.fur,{mood:petMood(p),acc:p.acc?[p.acc]:[]})+'</span><span class="wg-bar"><i style="width:'+Math.round(low)+'%"></i></span></button>')}
+  if(!wgHidden.includes('clima')&&CAN_FETCH){const d=wx&&wx.data&&wx.data.current;
+    if(d){const w=WMO[d.weather_code]||['—','cloud'];const rainy=w[1]==='rain';const t=Math.round(d.temperature_2m);
+      tiles.push('<button type="button" class="wg" data-go="clima"><span class="wg-l">'+esc((wx.loc.name||'').split(',')[0])+'</span><span class="wg-row"><span class="wg-big">'+t+'°</span><span class="wg-mini">'+catFace(p.fur,{mood:'happy',acc:rainy?['umbrella']:t<=16?['scarf']:t>=28?['sunglasses']:[]})+'</span></span><span class="wg-s">'+w[0]+'</span></button>')}
+    else tiles.push('<button type="button" class="wg" data-go="clima"><span class="wg-l">Clima</span><span class="wg-big">☁️</span><span class="wg-s">toque pra escolher a cidade</span></button>')}
+  if(!wgHidden.includes('ciclo')){buildCycleCache();const m=cycleCache.m;
+    if(m){const inP=cycleCache.map[todayStr]==='p';const n=diffDays(todayStr,m.next);
+      tiles.push('<button type="button" class="wg wg-cy" data-go="ciclo"><span class="wg-l">Ciclo 🔒</span><span class="wg-big">'+(inP?'💧':n<=0?'hoje':n)+'</span><span class="wg-s">'+(inP?'menstruada · se cuida':n<=0?'pode chegar hoje':(n===1?'dia':'dias')+' pra menstruação')+'</span></button>')}
+    else tiles.push('<button type="button" class="wg wg-cy" data-go="ciclo"><span class="wg-l">Ciclo 🔒</span><span class="wg-big">🌸</span><span class="wg-s">marque seu ciclo</span></button>')}
+  if(!wgHidden.includes('conta')){const nx=state.events.map(e=>({e,d:nextOcc(e)})).filter(x=>x.d&&x.d>todayStr).sort((a,b)=>(b.e.cat==='aniver')-(a.e.cat==='aniver')||a.d.localeCompare(b.d))[0];
+    if(nx)tiles.push('<button type="button" class="wg" data-go="d:'+nx.d+'"><span class="wg-l">Faltam</span><span class="wg-big">'+daysUntil(nx.d)+'</span><span class="wg-s">dias · '+esc(nx.e.title)+'</span></button>')}
+  if(!wgHidden.includes('diario')){const done=state.diary[todayStr]&&state.diary[todayStr].text;
+    tiles.push('<button type="button" class="wg" data-go="diario"><span class="wg-l">Diário</span><span class="wg-big">'+(done?'✓':'✏️')+'</span><span class="wg-s">'+(done?'você escreveu hoje':'escrever sobre hoje')+'</span></button>')}
+  box.innerHTML='<div class="wg-grid">'+tiles.join('')+'</div><button type="button" class="mini wg-cfg" id="wg-cfg">Editar widgets</button>';}
+document.addEventListener('click',e=>{
+  if(e.target.closest('#wg-cfg')){wgEditing=true;renderWidgets();return}
+  if(e.target.closest('#wg-done')){wgHidden=[...document.querySelectorAll('[data-wg]')].filter(x=>!x.checked).map(x=>x.dataset.wg);try{localStorage.setItem(LS+'-widgets',JSON.stringify(wgHidden))}catch(err){}wgEditing=false;renderWidgets();return}
+  const g=e.target.closest('.wg[data-go]');if(!g)return;const t=g.dataset.go;
+  if(t==='hoje'){state.sel=todayStr;state.y=today.getFullYear();state.m=today.getMonth();renderCal();renderDay();scrollToEl('day-title')}
+  else if(t==='mel'){scrollToEl('pet')}else if(t==='clima'){scrollToEl('weather')}else if(t==='ciclo'){scrollToEl('cycle')}
+  else if(t==='diario'){state.sel=todayStr;renderCal();renderDay();scrollToEl('diary-text');setTimeout(()=>$('diary-text').focus(),400)}
+  else if(t.startsWith('d:')){const d=t.slice(2);state.sel=d;const x=parse(d);state.y=x.getFullYear();state.m=x.getMonth();renderCal();renderDay();scrollToEl('day-title')}});
+/* atualiza widgets quando qualquer parte muda */
+const _r1=render,_r2=renderPet,_r3=renderCycle,_r4=renderWeather,_r5=renderDiary;
+render=function(){_r1();renderWidgets()};renderPet=function(){_r2();renderWidgets()};renderCycle=function(){_r3();renderWidgets()};renderWeather=function(){_r4();renderWidgets()};renderDiary=function(){_r5();renderWidgets()};
+/* atalhos do ícone (#novo, #diario, #mel) */
+function handleHash(){const h=location.hash.slice(1);if(!h)return;
+  if(h==='novo')setTimeout(()=>openForm(null,todayStr),300);else if(h==='diario')setTimeout(()=>{scrollToEl('diary-text');$('diary-text').focus()},400);else if(h==='mel')setTimeout(()=>scrollToEl('pet'),400);
+  try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}}
+
+renderLegend();renderAll();handleHash();addEventListener('hashchange',handleHash);
 ready.then(()=>{if(!db)setTimeout(()=>{maybeGreet();checkSoon()},700)});
 $('mascot').addEventListener('click',()=>maybeGreet(true));$('mascot').style.cursor='pointer';
 })();
