@@ -380,6 +380,27 @@ h1{font-family:var(--display);font-weight:700;font-size:clamp(1.7rem,4.6vw,2.6re
 .lv-fly{position:fixed;width:26px;height:26px;z-index:50;pointer-events:none;line-height:0;animation:lvfly 1.6s ease-out forwards}.lv-fly svg{width:100%;height:100%}
 @keyframes lvfly{0%{transform:translate(-50%,0) scale(.4);opacity:1}100%{transform:translate(calc(-50% + var(--x,0px)),-140px) scale(1.1);opacity:0}}
 @media (prefers-reduced-motion:reduce){.lv-env,.lv-meter i,.love.pop{animation:none}}
+.al-head{display:flex;align-items:center;gap:12px;margin-bottom:10px}.al-head small{color:var(--muted)}
+.al-cat{flex:none;width:54px;height:54px;line-height:0}.al-cat svg{width:54px;height:54px;overflow:visible}
+.al-list{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-direction:column;gap:8px}
+.al-list li{display:flex;align-items:center;gap:10px;background:var(--accent-soft);border-radius:16px;padding:10px 12px}
+.al-list li.off{opacity:.55}.al-list li.al-empty{background:none;color:var(--muted);padding:4px 0}
+.al-t{flex:1;min-width:0;display:flex;flex-direction:column}.al-t b{font:600 1.6rem/1 var(--display)}.al-t span{font-size:.82rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.al-sw{flex:none;width:44px;height:26px;border-radius:99px;border:none;background:var(--line);position:relative;padding:0}
+.al-sw i{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.al-sw[aria-checked="true"]{background:var(--accent)}.al-sw[aria-checked="true"] i{left:21px}
+.al-acts{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}.al-nap{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:.85rem;color:var(--muted)}
+.al-form select{width:100%}
+.al-snz{background:var(--accent-soft);border-radius:14px;padding:8px 12px;margin-bottom:10px;font-weight:600;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.al-tip{font-size:.8rem;color:var(--muted);margin:12px 0 0}
+#al-ring{z-index:60;background:radial-gradient(circle at 50% 40%,#6E0F73,#24132A);color:#fff;text-align:center}
+.al-ring-box{display:flex;flex-direction:column;align-items:center;gap:8px}
+#al-ring-time{font:600 4.2rem/1 var(--display)}#al-ring-label{font:600 1.3rem var(--display);margin:0 0 6px}
+#al-ring-cat{width:170px;height:170px;line-height:0;animation:alshake .5s ease-in-out infinite}#al-ring-cat svg{width:170px;height:170px;overflow:visible}
+@keyframes alshake{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg) translateY(-6px)}}
+.al-ring-acts{display:flex;gap:12px;margin-top:14px;flex-wrap:wrap;justify-content:center}
+#al-ring .btn{min-width:130px}#al-snooze{background:transparent;color:#fff;border-color:rgba(255,255,255,.5)}
+@media (prefers-reduced-motion:reduce){#al-ring-cat{animation:none}}
 .foot{text-align:center;color:var(--muted);font-family:var(--hand);font-size:1.25rem}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.confetti{display:none}}
 h1 #title{background:linear-gradient(transparent 62%,var(--accent-soft) 62%);padding:0 4px}
@@ -459,6 +480,7 @@ h1 #title{background:linear-gradient(transparent 62%,var(--accent-soft) 62%);pad
   <div class="extras">
     <section class="card pet" id="pet" aria-label="Gatinha virtual"></section>
     <section class="card cycle" id="cycle" aria-label="Ciclo menstrual"></section>
+    <section class="card alarm" id="alarm" aria-label="Despertador"></section>
     <section class="card album" id="album" aria-label="Álbum de figurinhas"></section>
     <section class="card weather" id="weather" aria-label="Clima" hidden></section>
   </div>
@@ -483,6 +505,11 @@ h1 #title{background:linear-gradient(transparent 62%,var(--accent-soft) 62%);pad
       <button class="btn primary" type="submit" id="ev-save">Salvar</button>
     </div>
   </form>
+</div>
+
+<div class="overlay" id="al-ring" hidden role="alertdialog" aria-label="Alarme">
+  <div class="al-ring-box"><div id="al-ring-cat"></div><div id="al-ring-time"></div><p id="al-ring-label"></p>
+    <div class="al-ring-acts"><button type="button" class="btn" id="al-snooze">Soneca 5 min</button><button type="button" class="btn primary" id="al-stop">Acordei! 💜</button></div></div>
 </div>
 
 <div class="overlay" id="fig-ov" hidden>
@@ -1318,6 +1345,59 @@ function loveIcs(){const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Agenda da
 document.addEventListener('click',e=>{if(e.target.closest('#lv-open'))openLove();else if(e.target.closest('#lv-ics'))loveIcs();else if(e.target.closest('[data-wg-go=recado]')){openLove();$('love').scrollIntoView({behavior:'smooth',block:'center'})}});
 
 DEFAULT_DECO=$('deco').innerHTML;applySeason();renderAlbum();renderLove();
+/* ---------- despertador da Mel ---------- */
+var alarms=[];try{alarms=JSON.parse(localStorage.getItem(LS+'-alarmes')||'[]')||[]}catch(e){alarms=[]}
+let alarmFired={},ringing=null,ringT=null,snoozeAt=null,alarmForm=false;
+const AL_DAYS={todo:'Todo dia',uteis:'Seg a sex',fds:'Fim de semana',uma:'Só uma vez'};
+function saveAlarms(){try{localStorage.setItem(LS+'-alarmes',JSON.stringify(alarms))}catch(e){warnLocal()}}
+function alarmToday(a,d){const w=d.getDay();return a.on&&(a.rep==='todo'||a.rep==='uma'||(a.rep==='uteis'&&w>0&&w<6)||(a.rep==='fds'&&(w===0||w===6)))}
+function renderAlarm(){const el=$('alarm');if(!el)return;const fur=(state.pet&&state.pet.fur)||'#2A2030';
+  let h='<div class="al-head"><span class="al-cat">'+catFace(fur,{mood:'sleepy'})+'</span><div><h3>Despertador da Mel</h3><small>A Mel mia pra te acordar</small></div></div>';
+  if(snoozeAt){const m=Math.max(0,Math.ceil((snoozeAt-Date.now())/60000));h+='<div class="al-snz">😴 Soneca: a Mel te chama em '+m+' min <button type="button" class="mini" id="al-snz-x">Cancelar</button></div>'}
+  h+='<ul class="al-list">'+(alarms.length?alarms.slice().sort((a,b)=>a.time.localeCompare(b.time)).map(a=>'<li class="'+(a.on?'':'off')+'"><button type="button" class="al-sw" data-al-sw="'+a.id+'" role="switch" aria-checked="'+a.on+'" aria-label="Ligar ou desligar"><i></i></button><div class="al-t"><b>'+esc(a.time)+'</b><span>'+esc(a.label||'Alarme')+' · '+AL_DAYS[a.rep]+'</span></div>'+
+    (CAN_ICS?'<button type="button" class="mini" data-al-ics="'+a.id+'" title="Colocar no celular">📲</button>':'')+'<button type="button" class="mini" data-al-del="'+a.id+'" aria-label="Apagar">✕</button></li>').join(''):'<li class="al-empty">Nenhum alarme ainda.</li>')+'</ul>';
+  if(alarmForm)h+='<div class="al-form"><div class="row2"><div class="field"><label for="al-time">Horário</label><input type="time" id="al-time" value="07:00"></div><div class="field"><label for="al-rep">Repetir</label><select id="al-rep">'+Object.entries(AL_DAYS).map(([k,v])=>'<option value="'+k+'">'+v+'</option>').join('')+'</select></div></div>'+
+    '<div class="field"><label for="al-label">Nome do alarme</label><input type="text" id="al-label" maxlength="40" placeholder="Ex.: Acordar pra faculdade"></div><div class="modal-acts"><button type="button" class="btn" id="al-cancel">Cancelar</button><button type="button" class="btn primary" id="al-save">Salvar alarme</button></div></div>';
+  else h+='<div class="al-acts"><button type="button" class="btn primary" id="al-new">+ Novo alarme</button><span class="al-nap">Soneca: <button type="button" class="mini" data-nap="5">5 min</button><button type="button" class="mini" data-nap="15">15 min</button><button type="button" class="mini" data-nap="30">30 min</button></span></div>';
+  h+='<p class="al-tip">'+(CAN_ICS?'Com o app aberto, a Mel toca aqui mesmo. Toque em 📲 para o alarme chegar como notificação no celular mesmo com o app fechado.':'A Mel toca enquanto a agenda estiver aberta.')+'</p>';
+  el.innerHTML=h}
+function alarmIcs(a){const now=new Date();let d=new Date(now.getFullYear(),now.getMonth(),now.getDate());const [hh,mm]=a.time.split(':').map(Number);
+  if(new Date(d.getFullYear(),d.getMonth(),d.getDate(),hh,mm)<=now)d.setDate(d.getDate()+1);
+  if(a.rep!=='uma')while(!alarmToday(a,d))d.setDate(d.getDate()+1);
+  const c=ymd(d).replace(/-/g,''),end=new Date(d.getFullYear(),d.getMonth(),d.getDate(),hh,mm+5);
+  const rr={todo:'RRULE:FREQ=DAILY',uteis:'RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR',fds:'RRULE:FREQ=WEEKLY;BYDAY=SA,SU'}[a.rep];
+  const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Agenda da Lara//PT-BR','CALSCALE:GREGORIAN','BEGIN:VEVENT','UID:alarme-'+a.id+'@agenda-da-lara','DTSTAMP:'+now.toISOString().replace(/[-:]/g,'').slice(0,15)+'Z',
+    'DTSTART:'+c+'T'+pad(hh)+pad(mm)+'00','DTEND:'+ymd(end).replace(/-/g,'')+'T'+pad(end.getHours())+pad(end.getMinutes())+'00','SUMMARY:'+icsEsc('⏰ '+(a.label||'Alarme da Mel')),'TRANSP:TRANSPARENT'];
+  if(rr)L.push(rr);L.push('BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+icsEsc('Miau! '+(a.label||'Hora de acordar')),'TRIGGER:PT0M','END:VALARM','END:VEVENT','END:VCALENDAR');
+  const blob=new Blob([L.join('\r\n')],{type:'text/calendar;charset=utf-8'});const url=URL.createObjectURL(blob);const x=document.createElement('a');x.href=url;x.download='alarme-'+a.time.replace(':','h')+'.ics';document.body.appendChild(x);x.click();x.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
+  toast('Abra o arquivo e toque em Adicionar ao calendário','wink')}
+function ring(label){if(ringing)return;ringing=label;const ov=$('al-ring');const fur=(state.pet&&state.pet.fur)||'#2A2030';
+  $('al-ring-cat').innerHTML=catFace(fur,{mood:'open',acc:petAcc(petNow())});$('al-ring-label').textContent=label||'Hora de acordar!';const n=new Date();$('al-ring-time').textContent=pad(n.getHours())+':'+pad(n.getMinutes());ov.hidden=false;
+  let i=0;const kinds=['meow','mew','meow','purr'];const go=()=>{playCat(kinds[i++%4]);try{navigator.vibrate&&navigator.vibrate([300,150,300])}catch(e){}};go();ringT=setInterval(go,2200);
+  try{if(document.hidden&&navigator.serviceWorker&&Notification.permission==='granted')navigator.serviceWorker.ready.then(r=>r.showNotification('⏰ '+(label||'Hora de acordar!'),{body:'Miau! A Mel está te chamando.',icon:'icon-192.png',tag:'alarme',requireInteraction:true}))}catch(e){}
+  setTimeout(()=>$('al-stop').focus(),50)}
+function stopRing(snooze){clearInterval(ringT);ringing=null;$('al-ring').hidden=true;if(snooze){snoozeAt=Date.now()+snooze*60000;toast('Mais '+snooze+' minutinhos... a Mel volta já','sleepy',true)}renderAlarm()}
+function tickAlarms(){const n=new Date(),t=pad(n.getHours())+':'+pad(n.getMinutes()),key=ymd(n)+' '+t;
+  if(snoozeAt&&Date.now()>=snoozeAt){snoozeAt=null;ring('Acabou a soneca!');return}
+  for(const a of alarms){if(a.time===t&&alarmToday(a,n)&&!alarmFired[a.id+key]){alarmFired[a.id+key]=1;if(a.rep==='uma'){a.on=false;saveAlarms()}ring(a.label);break}}
+  if(snoozeAt)renderAlarm()}
+setInterval(tickAlarms,5000);
+document.addEventListener('click',e=>{const t=e.target;let b;
+  if(t.closest('#al-new')){alarmForm=true;renderAlarm();setTimeout(()=>$('al-time').focus(),30);return}
+  if(t.closest('#al-cancel')){alarmForm=false;renderAlarm();return}
+  if(t.closest('#al-save')){const time=$('al-time').value;if(!time){$('al-time').focus();return}
+    alarms.push({id:'a'+Date.now().toString(36),time,rep:$('al-rep').value,label:$('al-label').value.trim(),on:true});saveAlarms();alarmForm=false;renderAlarm();
+    toast('Alarme das '+time+' salvo! A Mel vai miar pra você','love');
+    try{if(window.Notification&&Notification.permission==='default')Notification.requestPermission()}catch(err){}return}
+  if(b=t.closest('[data-al-sw]')){const a=alarms.find(x=>x.id===b.dataset.alSw);if(a){a.on=!a.on;saveAlarms();renderAlarm()}return}
+  if(b=t.closest('[data-al-del]')){alarms=alarms.filter(x=>x.id!==b.dataset.alDel);saveAlarms();renderAlarm();return}
+  if(b=t.closest('[data-al-ics]')){const a=alarms.find(x=>x.id===b.dataset.alIcs);if(a)alarmIcs(a);return}
+  if(b=t.closest('[data-nap]')){snoozeAt=Date.now()+(+b.dataset.nap)*60000;renderAlarm();toast('Soneca de '+b.dataset.nap+' minutos. Deixe a agenda aberta!','sleepy',true);return}
+  if(t.closest('#al-snz-x')){snoozeAt=null;renderAlarm();return}
+  if(t.closest('#al-stop')){stopRing(0);return}
+  if(t.closest('#al-snooze')){stopRing(5);return}});
+
+renderAlarm();
 renderLegend();renderAll();handleHash();addEventListener('hashchange',handleHash);
 ready.then(()=>{if(!db)setTimeout(()=>{maybeGreet();checkSoon()},700)});
 $('mascot').addEventListener('click',()=>maybeGreet(true));$('mascot').style.cursor='pointer';
